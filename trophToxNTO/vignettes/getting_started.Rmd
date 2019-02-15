@@ -1,0 +1,252 @@
+---
+title: "getting Started with trophToxNTO"
+author: "Haute Heure et al."
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+This vignette presents the installation and the basic use of functions included in the package `trophToxNTO`.
+
+## Installation
+
+```{r, eval=FALSE}
+install.packages('devtools') # if not already installed
+library('devtools') # load the library
+github_install("vbaudrot/trophToxNTO/trophToxNTO") # install from 'master'
+```
+
+And then, simply load the package :
+```{r loadLibrary}
+library(trophToxNTO)
+```
+
+## Step by step presentation
+
+1. If not yet done, first of all, load the package `EUMSCAProject`:
+
+2. Describe the scenario: give he level of broma require for treatment, `vole.level.test` in individual, and the quantity of treatment input, `broma.level.test` , in ppm.
+
+```{r,warning=FALSE}
+vole.level.test = 250
+broma.level.test = 20*50
+
+# Run condition function for scenario
+scenario = condition(Vole.Level=vole.level.test,Broma.Level=broma.level.test)
+
+root.event=scenario[[1]]
+event.func=scenario[[2]]
+```
+
+3. Integration of the differential equation system
+
+In the part, you need first to download package `deSolve`, then the number of parallel simulation is require for the integration (use the pars function to avoid confusion).
+
+Here is for 1 simulations
+
+```{r ode1, warning=FALSE, cache=TRUE}
+# Load package deSolve
+# library(deSolve)
+
+# number of parallel simulation
+params=pars(n=1)
+
+# times vector of integration
+times <- seq(from=0, to=15*365, length.out = 1e3) #  30*5 = 5 months 
+
+# Run the model
+
+model.output    <- ode(times = times,
+                       y = init(params$n),
+                       func = ode.broma.tritrophic,
+                       parms  = params,
+                       events = list(func = event.func, root = TRUE),
+                       rootfun = root.event)
+
+```
+
+4. Graphic output
+
+```{r,warning=FALSE,message=FALSE}
+graphique(params$n,times,model.output) 
+```
+
+## Test multi-parameters
+
+Several simulation in parallele to test parameters. Here it's the carrying capacity of voles `K.V`.
+
+```{r, warning=FALSE, cache = TRUE}
+# number of parallel simulation
+params=pars(n=2)
+
+# Run the model
+model.output    <- ode(times = times,
+                       y = init(params$n),
+                       func = ode.broma.tritrophic,
+                       parms = pars(
+                         n=params$n, # Do not foret to specify this !!!
+                         K.V=seq(200,800,length=params$n)
+                       ),
+                       events = list(func = event.func, root = TRUE),
+                       rootfun = root.event)
+
+# Graphic output
+graphique(params$n,times,model.output) 
+```
+
+## Test multi initial values
+
+Several simulation in parallele with different initial conditions. Here for foxes, $0$ and $0.03$ ind/ha. 
+
+
+```{r,warning=FALSE, cache=TRUE}
+# number of parallel simulation
+params=pars(n=2)
+
+# Run the model
+model.output    <- ode(times = times,
+                       y = init(params$n,
+                                D.F = c(0,0.2)
+                                ),
+                       func = ode.broma.tritrophic,
+                       parms = params,
+                       events = list(func = event.func, root = TRUE),
+                       rootfun = root.event)
+
+# Graphic output
+graphique(params$n,times,model.output) 
+```
+
+## Test multi parameters and multi initial values
+
+| group | $Fx$ | $K.V$ |
+|---|---|---|
+| 1 | 0 | 400 | 
+| 2 | 0.03 | 600 |
+| 3 | 0 | 600 |
+| 4 | 0.03 | 400 |
+
+```{r,warning=FALSE, cache=TRUE}
+# number of parallel simulation
+params=pars(n=4)
+
+# Run the model
+model.output    <- ode(times = times,
+                       y = init(params$n,
+                                D.F = c(0,0.03,0,0.03)
+                                ),
+                       func = ode.broma.tritrophic,
+                       parms = pars(
+                         n=params$n, # Do not foret to specify this !!!
+                         K.V=c(400,600,600,400)
+                       ),
+                       events = list(func = event.func, root = TRUE),
+                       rootfun = root.event)
+
+# Graphic output
+graphique(params$n,times,model.output) 
+```
+
+## Graphique_3 : Another graphique reduce compared to graphique()
+
+```{r,warning=FALSE}
+graphique_3(params$n,times,model.output) 
+```
+
+
+## Graphique_2 : simulation with and without foxes
+
+```{r,warning=FALSE, cache=TRUE}
+times <- seq(from=0, to=15*365, length.out = 1e4) #  30*5 = 5 months 
+
+params=pars(n=2,
+            LD.50.F=0.5,
+            days.to.die.F=5
+            )
+
+init.p=init(params$n,
+     D.F = c(0,0.025)
+     )
+
+# --------------------------- EVENEMENTS -------------------
+scenario=condition(Vole.Level=250,Broma.Level=20*50)
+root.event=scenario[[1]]
+event.func=scenario[[2]]
+
+# --------------------------- Modelisation -------------------
+model.output = ode(y=init.p,
+                   times,
+                   ode.broma.tritrophic, 
+                   parms = params,
+                   events = list(func = event.func, root = TRUE),
+                   rootfun = root.event)
+
+# --------------------------- Plot-------------------
+graphique_2(params$n,times,model.output)
+```
+
+## Output Ingestion and Mortality
+
+
+####  Model for test
+
+```{r,warning=FALSE, cache=TRUE}
+params=pars(n=1,
+            LD.50.F=0.5,
+            days.to.die.F=5)
+
+# times vector of integration
+times <- seq(from=0, to=30*365, length.out = 1e4) #  30*5 = 5 months 
+
+scenario=condition(Vole.Level=500,Broma.Level=20*50)
+root.event=scenario[[1]]
+event.func=scenario[[2]]
+
+model.output    <- ode(times = times,
+                       y = init(params$n),
+                       func = ode.broma.tritrophic,
+                       parms  = params,
+                       events = list(func = event.func, root = TRUE),
+                       rootfun = root.event)
+
+
+df=table_df(model.output)
+```
+
+### Repartition of ingestion in mustelids and foxes
+
+```{r,warning=FALSE}
+# library(gridExtra) # to plot grid.arrange()
+```
+
+
+```{r,warning=FALSE}
+# df.Nbr.ingest=Nbr.ingest(df,params,group.num=1)
+# 
+# p.ingest=plotIngest(df.Nbr.ingest)
+# 
+# ingestion.mustelids=p.ingest[[1]]
+# ingestion.foxes=p.ingest[[2]]
+# 
+# grid.arrange(ingestion.mustelids,ingestion.foxes,nrow=2)
+```
+
+### Repartition of mortality in Voles and Mustelids
+
+```{r,warning=FALSE}
+# df.Nbr.mortality=Nbr.mortality(df,params,group.num=1)
+# 
+# p.mortality=plotMortality(df.Nbr.mortality)
+# 
+# mortality.voles=p.mortality[[1]]
+# mortality.mustelids=p.mortality[[2]]
+# 
+# grid.arrange(mortality.voles,mortality.mustelids,nrow=2)
+```
+
+
