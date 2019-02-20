@@ -1,6 +1,6 @@
 #' @title General Solver for Ordinary Differential Equations
 #'
-#' @description function from package \link{deDolve}.
+#' @description function from package \link{deSolve}.
 #' Solves a system of ordinary differential equations;
 #'  a wrapper around the implemented ODE solvers
 #'
@@ -11,22 +11,32 @@
 #' @importFrom deSolve ode
 NULL
 
-
+#' @title Arrange multiple grobs on a page
+#'
+#' @description function from package \link{gridExtra}.
+#' Set up a gtable layout to place multiple grobs on a page.
+#'
+#' @name grid.arrange
+#' @rdname grid.arrange
+#' @keywords internal
+#' @export
+#' @importFrom gridExtra grid.arrange
+NULL
 
 #' Dose-response curves for mortality
 #'
-#' Take a vecor containing : (i) the concentration in the body, (ii) the Lethal Dose of e species, (iii) the hill coeficient of the curve and (iv) the number of day to die
+#' Take a vecor containing : (i) the concentration in the body, (ii) the Lethal Dose of e species,
+#'  (iii) the hill coeficient of the curve and (iv) the number of day to die
+#'
 #' @param C A numeric vector of the concentration in the individual
-#' @param LD50 A numeric value of the Lethal Dose 50 (50% of the individual die)
-#' @param Hill.coef A numeric value coresponding to the Hill coefficient of the dose-response curve
+#' @param LD.50 A numeric value of the Lethal Dose 50 (50% of the individual die)
+#' @param H.coef A numeric value coresponding to the Hill coefficient of the dose-response curve
 #' @param days.death The number of days to die according to the LD50
 #'
-#' @return The Dose-Response curve
 #'
 #' @export
 #'
 #'
-
 dose.resp.mort=function(C,LD.50,H.coef,days.death){
   return(
     1/days.death*(1-1/(1+(C/LD.50)^H.coef))
@@ -57,6 +67,9 @@ intake.V=function(C,max.intake.C,D50.intake.C){
 #'
 #' Take Time, State, Pars as input, return derivative list
 #'
+#' @param Time
+#' @param State
+#' @param Pars
 #'
 #' @return A derivative list to integrate with deSolve package
 #'
@@ -213,7 +226,7 @@ pars  <- function(
 #'
 #' Take all parameters a vector and return a list
 #'
-#' @param pars.init List of parameters for the differential equations
+#' @param n.simu number of simulation to take into account
 #' @param C.soil Concentration broma available in the soil
 #' @param C.V  Concentration broma in individual vole
 #' @param C.M  Concentration broma in individual mustelids

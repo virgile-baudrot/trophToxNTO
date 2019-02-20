@@ -5,8 +5,10 @@ date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Vignette Title}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
 ---
 
 
@@ -15,6 +17,7 @@ knitr::opts_chunk$set(fig.height = 6,
                       fig.width = 7)
 
 library(trophToxNTO) # Package for ordinary differential equations
+library(gridExtra)
 ```
 
 
@@ -33,7 +36,7 @@ init.p <- init(params$n)
 ## a) Model 0-0
 
 
-```{r, echo=FALSE,warning=FALSE,comment=FALSE,message=FALSE, cache=TRUE}
+```{r model.output_0.0, echo=FALSE,warning=FALSE,comment=FALSE,message=FALSE, cache=TRUE}
 # --------------------------- Modelisation -------------------
 model.output_0.0 = ode(y=init.p,
                     times,
@@ -45,7 +48,7 @@ graphique_3(params$n,times,model.output_0.0)
 
 ## b) Model 500-20
 
-```{r, cache=TRUE}
+```{r model.output_500.20, cache=TRUE}
 # --------------------------- EVENEMENTS -------------------
 root.event=condition(Vole.Level=500,Broma.Level=20*50)[[1]]
 event.func=condition(Vole.Level=500,Broma.Level=20*50)[[2]]
@@ -64,7 +67,7 @@ graphique_3(params$n,times,model.output_500.20)
 
 ## c) Model 250-20
 
-```{r, cache=TRUE}
+```{r model.output_250.20, cache=TRUE}
 # --------------------------- EVENEMENTS -------------------
 root.event = condition(Vole.Level=250,Broma.Level=20*50)[[1]]
 event.func = condition(Vole.Level=250,Broma.Level=20*50)[[2]]
@@ -82,7 +85,7 @@ graphique_3(params$n,times,model.output_250.20)
 
 ## d) Model 250-7.5
 
-```{r, cache=TRUE}
+```{r model.output_250.7.5, cache=TRUE}
 # --------------------------- EVENEMENTS -------------------
 root.event = condition(Vole.Level=250,Broma.Level=7.5*50)[[1]]
 event.func = condition(Vole.Level=250,Broma.Level=7.5*50)[[2]]
@@ -100,7 +103,7 @@ graphique_3(params$n,times,model.output_250.7.5)
 
 ## e) Model 50-7.5
 
-```{r, cache=TRUE}
+```{r model.output_50.7.5, cache=TRUE}
 # --------------------------- EVENEMENTS -------------------
 root.event = condition(Vole.Level=50,Broma.Level=7.5*50)[[1]]
 event.func = condition(Vole.Level=50,Broma.Level=7.5*50)[[2]]
@@ -127,9 +130,9 @@ init.p <- init(params$n, D.F=0)
 ## a) Model 0-0
 
 
-```{r, echo=FALSE,warning=FALSE,comment=FALSE,message=FALSE, cache=TRUE}
+```{r model.output_0.0_0F, echo=FALSE,warning=FALSE,comment=FALSE,message=FALSE, cache=TRUE}
 # --------------------------- Modelisation -------------------
-model.output_0.0 = ode(y=init.p,
+model.output_0.0_0F = ode(y=init.p,
                     times,
                     ode.broma.tritrophic, 
                     parms = params)
@@ -139,13 +142,13 @@ graphique_3(params$n,times,model.output_0.0)
 
 ## b) Model 500-20
 
-```{r, cache=TRUE}
+```{r model.output_500.20_0F, cache=TRUE}
 # --------------------------- EVENEMENTS -------------------
 root.event=condition(Vole.Level=500,Broma.Level=20*50)[[1]]
 event.func=condition(Vole.Level=500,Broma.Level=20*50)[[2]]
 
 # --------------------------- Modelisation -------------------
-model.output_500.20 = ode(y=init.p,
+model.output_500.20_0F = ode(y=init.p,
                    times,
                    ode.broma.tritrophic, 
                    parms = params,
@@ -158,13 +161,13 @@ graphique_3(params$n,times,model.output_500.20)
 
 ## c) Model 250-20
 
-```{r, cache=TRUE}
+```{r model.output_250.20_0F, cache=TRUE}
 # --------------------------- EVENEMENTS -------------------
 root.event = condition(Vole.Level=250,Broma.Level=20*50)[[1]]
 event.func = condition(Vole.Level=250,Broma.Level=20*50)[[2]]
 
 # --------------------------- Modelisation -------------------
-model.output_250.20 = ode(y=init.p,
+model.output_250.20_0F = ode(y=init.p,
                    times,
                    ode.broma.tritrophic, 
                    parms = params,
@@ -176,13 +179,13 @@ graphique_3(params$n,times,model.output_250.20)
 
 ## d) Model 250-7.5
 
-```{r, cache=TRUE}
+```{r model.output_250.7.5_0F, cache=TRUE}
 # --------------------------- EVENEMENTS -------------------
 root.event = condition(Vole.Level=250,Broma.Level=7.5*50)[[1]]
 event.func = condition(Vole.Level=250,Broma.Level=7.5*50)[[2]]
 
 # --------------------------- Modelisation -------------------
-model.output_250.7.5 = ode(y=init.p,
+model.output_250.7.5_0F = ode(y=init.p,
                    times,
                    ode.broma.tritrophic, 
                    parms = params,
@@ -194,13 +197,13 @@ graphique_3(params$n,times,model.output_250.7.5)
 
 ## e) Model 50-7.5
 
-```{r, cache=TRUE}
+```{r model.output_50.7.5_0F, cache=TRUE}
 # --------------------------- EVENEMENTS -------------------
 root.event = condition(Vole.Level=50,Broma.Level=7.5*50)[[1]]
 event.func = condition(Vole.Level=50,Broma.Level=7.5*50)[[2]]
 
 # --------------------------- Modelisation -------------------
-model.output_50.7.5 = ode(y = init.p,
+model.output_50.7.5_0F = ode(y = init.p,
                    times,
                    ode.broma.tritrophic, 
                    parms = params,
@@ -209,3 +212,512 @@ model.output_50.7.5 = ode(y = init.p,
 
 graphique_3(params$n,times,model.output_50.7.5)
 ```
+
+### EXPORT GRAPHICS
+
+```{r}
+# setwd("~/Documents/PACKAGES/trophToxNTO/trophToxNTO")
+# save(model.output_0.0, file = "data/model.output_0.0.rda")
+# save(model.output_500.20, file = "data/model.output_500.20.rda")
+# save(model.output_250.20, file = "data/model.output_250.20.rda")
+# save(model.output_250.7.5, file = "data/model.output_250.7.5.rda")
+# save(model.output_50.7.5, file = "data/model.output_50.7.5_0F.rda")
+# 
+# save(model.output_0.0_0F, file = "data/model.output_0.0_0F.rda")
+# save(model.output_500.20_0F, file = "data/model.output_500.20_0F.rda")
+# save(model.output_250.20_0F, file = "data/model.output_250.20_0F.rda")
+# save(model.output_250.7.5_0F, file =  "data/model.output_250.7.5_0F.rda")
+# save(model.output_50.7.5_0F, file = "data/model.output_50.7.5_0F.rda")
+```
+
+
+```{r}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+setwd("~/Documents/PACKAGES/trophToxNTO/trophToxNTO")
+load(file = "data/model.output_0.0.rda")
+load(file = "data/model.output_500.20.rda")
+load(file = "data/model.output_250.20.rda")
+load(file = "data/model.output_250.7.5.rda")
+load(file = "data/model.output_50.7.5_0F.rda")
+
+load(file = "data/model.output_0.0_0F.rda")
+load(file = "data/model.output_500.20_0F.rda")
+load(file = "data/model.output_250.20_0F.rda")
+load(file =  "data/model.output_250.7.5_0F.rda")
+load(file = "data/model.output_50.7.5_0F.rda")
+```
+
+# Foxes and Mustelids
+
+
+```{r}
+## INITIAL VALUE
+# scale_fun_F <- function(df){
+#   df[df$time == 0, "D.F_"]
+# }
+# scale_fun_M <- function(df){
+#   df[df$time == 0, "D.M_"]
+# }
+## SCALE WITH MAXIMAL
+scale_fun_F <- function(df){
+  max(df$D.F_)
+}
+scale_fun_M <- function(df){
+  max(df$D.M_)
+}
+```
+
+
+```{r}
+df_tab <- as.data.frame(model.output_0.0) %>%
+  select(time, D.F_, D.M_) %>%
+  mutate(group = "0.0",
+         ID_group = "a")
+D.F_scale_0.0 = scale_fun_F(df_tab)
+D.M_scale_0.0 = scale_fun_M(df_tab)
+
+df_tab$Foxes = df_tab$D.F_ / D.F_scale_0.0
+df_tab$Mustelids = df_tab$D.M_ / D.M_scale_0.0
+
+plot(df_tab$time, df_tab$Foxes)
+plot(df_tab$time, df_tab$Mustelids)
+
+df_plot_0.0_MF <- df_tab %>%
+  gather(Species, ratioVar, c('Foxes', 'Mustelids'))
+
+plot_0.0_MF <- ggplot(data = df_plot_0.0_MF) + theme_minimal() +
+  scale_x_continuous(
+      breaks = seq(0,max(times),length=11),
+      labels=round(seq(0,max(times)/365,length=11),1),
+      name="time in year")+
+  scale_color_manual(values = c("black", "grey70")) +
+  labs(y = "Rate of variation of densities") +
+  geom_line(aes(x = time, y = ratioVar, color = Species))
+plot_0.0_MF
+```
+
+```{r}
+df_tab <- as.data.frame(model.output_500.20) %>%
+  select(time, D.F_, D.M_) %>%
+  mutate(group = "500.20",
+         ID_group = "b")
+D.F_scale_500.20 = scale_fun_F(df_tab)
+D.M_scale_500.20 = scale_fun_M(df_tab)
+
+df_tab$Foxes = df_tab$D.F_ / D.F_scale_500.20
+df_tab$Mustelids = df_tab$D.M_ / D.M_scale_500.20
+
+plot(df_tab$time, df_tab$Foxes)
+plot(df_tab$time, df_tab$Mustelids)
+
+df_plot_500.20_MF <- df_tab %>%
+  gather(Species, ratioVar, c('Foxes', 'Mustelids'))
+
+plot_500.20_MF <- ggplot(data = df_plot_500.20_MF) + theme_minimal() +
+  scale_x_continuous(
+      breaks = seq(0,max(times),length=11),
+      labels=round(seq(0,max(times)/365,length=11),1),
+      name="time in year")+
+  scale_color_manual(values = c("black", "grey70")) +
+  labs(y = "Rate of variation of densities") +
+  geom_line(aes(x = time, y = ratioVar, color = Species))
+plot_500.20_MF
+```
+
+
+```{r}
+df_tab <- as.data.frame(model.output_250.20) %>%
+  select(time, D.F_, D.M_) %>%
+  mutate(group = "250.20",
+         ID_group = "c")
+D.F_scale_250.20 = scale_fun_F(df_tab)
+D.M_scale_250.20 = scale_fun_M(df_tab)
+
+df_tab$Foxes = df_tab$D.F_ / D.F_scale_250.20
+df_tab$Mustelids = df_tab$D.M_ / D.M_scale_250.20
+
+plot(df_tab$time, df_tab$Foxes)
+plot(df_tab$time, df_tab$Mustelids)
+
+df_plot_250.20_MF <- df_tab %>%
+  gather(Species, ratioVar, c('Foxes', 'Mustelids'))
+
+plot_250.20_MF <- ggplot(data = df_plot_250.20_MF) + theme_minimal() +
+  scale_x_continuous(
+      breaks = seq(0,max(times),length=11),
+      labels=round(seq(0,max(times)/365,length=11),1),
+      name="time in year")+
+  scale_color_manual(values = c("black", "grey70")) +
+  labs(y = "Rate of variation of densities") +
+  geom_line(aes(x = time, y = ratioVar, color = Species))
+plot_250.20_MF
+```
+
+
+```{r}
+df_tab <- as.data.frame(model.output_250.7.5) %>%
+  select(time, D.F_, D.M_) %>%
+  mutate(group = "250.7.5",
+         ID_group = "d")
+D.F_scale_250.7.5 = scale_fun_F(df_tab)
+D.M_scale_250.7.5 = scale_fun_M(df_tab)
+
+df_tab$Foxes = df_tab$D.F_ / D.F_scale_250.7.5
+df_tab$Mustelids = df_tab$D.M_ / D.M_scale_250.7.5
+
+plot(df_tab$time, df_tab$Foxes)
+plot(df_tab$time, df_tab$Mustelids)
+
+df_plot_250.7.5_MF <- df_tab %>%
+  gather(Species, ratioVar, c('Foxes', 'Mustelids'))
+
+plot_250.7.5_MF <- ggplot(data = df_plot_250.7.5_MF) + theme_minimal() +
+  scale_x_continuous(
+      breaks = seq(0,max(times),length=11),
+      labels=round(seq(0,max(times)/365,length=11),1),
+      name="time in year")+
+  scale_color_manual(values = c("black", "grey70")) +
+  labs(y = "Rate of variation of densities") +
+  geom_line(aes(x = time, y = ratioVar, color = Species))
+plot_250.7.5_MF
+```
+
+```{r}
+df_tab <- as.data.frame(model.output_50.7.5) %>%
+  select(time, D.F_, D.M_) %>%
+  mutate(group = "50.7.5",
+         ID_group = "e")
+D.F_scale_50.7.5 = scale_fun_F(df_tab)
+D.M_scale_50.7.5 = scale_fun_M(df_tab)
+
+df_tab$Foxes = df_tab$D.F_ / D.F_scale_50.7.5
+df_tab$Mustelids = df_tab$D.M_ / D.M_scale_50.7.5
+
+plot(df_tab$time, df_tab$Foxes)
+plot(df_tab$time, df_tab$Mustelids)
+
+df_plot_50.7.5_MF <- df_tab %>%
+  gather(Species, ratioVar, c('Foxes', 'Mustelids'))
+
+plot_50.7.5_MF <- ggplot(data = df_plot_50.7.5_MF) + theme_minimal() +
+  scale_x_continuous(
+      breaks = seq(0,max(times),length=11),
+      labels=round(seq(0,max(times)/365,length=11),1),
+      name="time in year")+
+  scale_color_manual(values = c("black", "grey70")) +
+  labs(y = "Rate of variation of densities") +
+  geom_line(aes(x = time, y = ratioVar, color = Species))
+plot_50.7.5_MF
+```
+# Vole and Dead Vole
+
+```{r}
+## INITIAL VALUE
+# scale_fun_Vd <- function(df){
+#   df[df$time == 0, "D.Vd_"]
+# }
+# scale_fun_V <- function(df){
+#   df[df$time == 0, "D.V_"]
+# }
+## SCALE WITH VAXIVAL
+scale_fun_Vd <- function(df){
+  max(df$D.Vd_)
+}
+scale_fun_V <- function(df){
+  max(df$D.V_)
+}
+```
+
+
+
+```{r}
+df_tab <- as.data.frame(model.output_0.0) %>%
+  select(time, D.Vd_, D.V_) %>%
+  mutate(group = "0.0",
+         ID_group = "a")
+D.Vd_scale_0.0 = scale_fun_Vd(df_tab)
+D.V_scale_0.0 = scale_fun_V(df_tab)
+
+df_tab$dead_Voles = df_tab$D.Vd_ / D.Vd_scale_0.0
+df_tab$Voles = df_tab$D.V_ / D.V_scale_0.0
+
+plot(df_tab$time, df_tab$Voles)
+plot(df_tab$time, df_tab$Voles)
+
+df_plot_0.0_VVd <- df_tab %>%
+  gather(Species, ratioVar, c('dead_Voles', 'Voles'))
+
+plot_0.0_VVd <- ggplot(data = df_plot_0.0_VVd) + theme_minimal() +
+  scale_x_continuous(
+      breaks = seq(0,max(times),length=11),
+      labels=round(seq(0,max(times)/365,length=11),1),
+      name="time in year")+
+  scale_color_manual(values = c("black", "grey70")) +
+  labs(y = "Rate of variation of densities") +
+  geom_line(aes(x = time, y = ratioVar, color = Species))
+plot_0.0_VVd
+```
+
+```{r}
+df_tab <- as.data.frame(model.output_500.20) %>%
+  select(time, D.Vd_, D.V_) %>%
+  mutate(group = "500.20",
+         ID_group = "b")
+D.Vd_scale_500.20 = scale_fun_Vd(df_tab)
+D.V_scale_500.20 = scale_fun_V(df_tab)
+
+df_tab$dead_Voles = df_tab$D.Vd_ / D.Vd_scale_500.20
+df_tab$Voles = df_tab$D.V_ / D.V_scale_500.20
+
+plot(df_tab$time, df_tab$dead_Voles)
+plot(df_tab$time, df_tab$Voles)
+
+df_plot_500.20_VVd <- df_tab %>%
+  gather(Species, ratioVar, c('dead_Voles', 'Voles'))
+
+plot_500.20_VVd <- ggplot(data = df_plot_500.20_VVd) + theme_minimal() +
+  scale_x_continuous(
+      breaks = seq(0,max(times),length=11),
+      labels=round(seq(0,max(times)/365,length=11),1),
+      name="time in year")+
+  scale_color_manual(values = c("black", "grey70")) +
+  labs(y = "Rate of variation of densities") +
+  geom_line(aes(x = time, y = ratioVar, color = Species))
+plot_500.20_VVd
+```
+
+
+```{r}
+df_tab <- as.data.frame(model.output_250.20) %>%
+  select(time, D.Vd_, D.V_) %>%
+  mutate(group = "250.20",
+         ID_group = "c")
+D.Vd_scale_250.20 = scale_fun_Vd(df_tab)
+D.V_scale_250.20 = scale_fun_V(df_tab)
+
+df_tab$dead_Voles = df_tab$D.Vd_ / D.Vd_scale_250.20
+df_tab$Voles = df_tab$D.V_ / D.V_scale_250.20
+
+plot(df_tab$time, df_tab$dead_Voles)
+plot(df_tab$time, df_tab$Voles)
+
+df_plot_250.20_VVd <- df_tab %>%
+  gather(Species, ratioVar, c('dead_Voles', 'Voles'))
+
+plot_250.20_VVd <- ggplot(data = df_plot_250.20_VVd) + theme_minimal() +
+  scale_x_continuous(
+      breaks = seq(0,max(times),length=11),
+      labels=round(seq(0,max(times)/365,length=11),1),
+      name="time in year")+
+  scale_color_manual(values = c("black", "grey70")) +
+  labs(y = "Rate of variation of densities") +
+  geom_line(aes(x = time, y = ratioVar, color = Species))
+plot_250.20_VVd
+```
+
+
+```{r}
+df_tab <- as.data.frame(model.output_250.7.5) %>%
+  select(time, D.Vd_, D.V_) %>%
+  mutate(group = "250.7.5",
+         ID_group = "d")
+D.Vd_scale_250.7.5 = scale_fun_Vd(df_tab)
+D.V_scale_250.7.5 = scale_fun_V(df_tab)
+
+df_tab$dead_Voles = df_tab$D.Vd_ / D.Vd_scale_250.7.5
+df_tab$Voles = df_tab$D.V_ / D.V_scale_250.7.5
+
+plot(df_tab$time, df_tab$dead_Voles)
+plot(df_tab$time, df_tab$Voles)
+
+df_plot_250.7.5_VVd <- df_tab %>%
+  gather(Species, ratioVar, c('dead_Voles', 'Voles'))
+
+plot_250.7.5_VVd <- ggplot(data = df_plot_250.7.5_VVd) + theme_minimal() +
+  scale_x_continuous(
+      breaks = seq(0,max(times),length=11),
+      labels=round(seq(0,max(times)/365,length=11),1),
+      name="time in year")+
+  scale_color_manual(values = c("black", "grey70")) +
+  labs(y = "Rate of variation of densities") +
+  geom_line(aes(x = time, y = ratioVar, color = Species))
+plot_250.7.5_VVd
+```
+
+```{r}
+df_tab <- as.data.frame(model.output_50.7.5) %>%
+  select(time, D.Vd_, D.V_) %>%
+  mutate(group = "50.7.5",
+         ID_group = "e")
+D.Vd_scale_50.7.5 = scale_fun_Vd(df_tab)
+D.V_scale_50.7.5 = scale_fun_V(df_tab)
+
+df_tab$dead_Voles = df_tab$D.Vd_ / D.Vd_scale_50.7.5
+df_tab$Voles = df_tab$D.V_ / D.V_scale_50.7.5
+
+plot(df_tab$time, df_tab$dead_Voles)
+plot(df_tab$time, df_tab$Voles)
+
+df_plot_50.7.5_VVd <- df_tab %>%
+  gather(Species, ratioVar, c('dead_Voles', 'Voles'))
+
+plot_50.7.5_VVd <- ggplot(data = df_plot_50.7.5_VVd) + theme_minimal() +
+  scale_x_continuous(
+      breaks = seq(0,max(times),length=11),
+      labels=round(seq(0,max(times)/365,length=11),1),
+      name="time in year")+
+  scale_color_manual(values = c("black", "grey70")) +
+  labs(y = "Rate of variation of densities") +
+  geom_line(aes(x = time, y = ratioVar, color = Species))
+plot_50.7.5_VVd
+```
+
+# Plots and join plot
+
+
+```{r}
+# legend.position = c(.5, .5))
+# z + theme(legend.background = element_rect(colour = "black")
+plot_join <- ggplot() +
+  theme_minimal() +
+  theme(legend.position = c(0.13, 0.93), # c(0,0) bottom left, c(1,1) top-right.
+        legend.background = element_rect(fill = "#ffffffaa", colour = NA),
+        legend.title = element_blank()
+  ) +
+  # theme(legend.position="none") +
+  scale_x_continuous(
+      breaks = seq(0,max(times),length=11),
+      labels=round(seq(0,max(times)/365,length=11),1),
+      name="Time in year")+
+  scale_color_manual(values = c("black", "grey50")) +
+  labs(y = "Rate of variation of densities") +
+  # Buffer
+  geom_rect(
+    data=data.frame(ID_group = c("a", "b", "c", "d", "e")),
+    aes(xmin=0, xmax=365*10, ymin=-Inf, ymax=Inf), 
+    alpha = 0.5, fill = 'grey')
+
+
+y_min = -Inf # 1 
+y_max = Inf # 1.2
+
+b_seq = 365*c(10, 17, 22.7, 32.5, 38, 48, 50)
+d_seq = 365*c(10, 12.5, 16.4, 23.5, 27.5, 34.5, 38.5, 45, 48.8, 50)
+# VR Regulation
+plot_join <- plot_join +
+  geom_rect(data=data.frame(ID_group = "a"),
+            aes(xmin=365*10, xmax=365*50, ymin=y_min, ymax=y_max),
+            alpha = 0.5, fill = '#5E8F09') +
+  # b
+  geom_rect(data=data.frame(ID_group = "b"),
+            aes(xmin=b_seq[2], xmax=b_seq[3], ymin=y_min, ymax=y_max),
+            alpha = 0.5, fill = '#5E8F09') +
+  geom_rect(data=data.frame(ID_group = "b"),
+            aes(xmin=b_seq[4], xmax=b_seq[5], ymin=y_min, ymax=y_max),
+            alpha = 0.5, fill = '#5E8F09') +
+  geom_rect(data=data.frame(ID_group = "b"),
+            aes(xmin=b_seq[6], xmax=b_seq[7], ymin=y_min, ymax=y_max),
+            alpha = 0.5, fill = '#5E8F09') +
+  # d
+  geom_rect(data=data.frame(ID_group = "d"),
+            aes(xmin=d_seq[2], xmax=d_seq[3], ymin=y_min, ymax=y_max),
+            alpha = 0.5, fill = '#5E8F09') +
+  geom_rect(data=data.frame(ID_group = "d"),
+            aes(xmin=d_seq[4], xmax=d_seq[5], ymin=y_min, ymax=y_max),
+            alpha = 0.5, fill = '#5E8F09') +
+  geom_rect(data=data.frame(ID_group = "d"),
+            aes(xmin=d_seq[6], xmax=d_seq[7], ymin=y_min, ymax=y_max),
+            alpha = 0.5, fill = '#5E8F09') +
+  geom_rect(data=data.frame(ID_group = "d"),
+            aes(xmin=d_seq[8], xmax=d_seq[9], ymin=y_min, ymax=y_max),
+            alpha = 0.5, fill = '#5E8F09') +
+# VdR Regulation
+  # b
+  geom_rect(data=data.frame(ID_group = "b"),
+            aes(xmin=b_seq[1], xmax=b_seq[2], ymin=y_min, ymax=y_max),
+            alpha = 0.5, fill = '#C15757') +
+  geom_rect(data=data.frame(ID_group = "b"),
+            aes(xmin=b_seq[3], xmax=b_seq[4], ymin=y_min, ymax=y_max),
+            alpha = 0.5, fill = '#C15757') +
+  geom_rect(data=data.frame(ID_group = "b"),
+            aes(xmin=b_seq[5], xmax=b_seq[6], ymin=y_min, ymax=y_max),
+            alpha = 0.5, fill = '#C15757') +
+  # c
+  geom_rect(data=data.frame(ID_group = "c"),
+            aes(xmin=365*10, xmax=365*50, ymin=y_min, ymax=y_max),
+            alpha = 0.5, fill = '#C15757') +
+  # d
+  geom_rect(data=data.frame(ID_group = "d"),
+            aes(xmin=d_seq[1], xmax=d_seq[2], ymin=y_min, ymax=y_max),
+            alpha = 0.5, fill = '#C15757') +
+  geom_rect(data=data.frame(ID_group = "d"),
+            aes(xmin=d_seq[3], xmax=d_seq[4], ymin=y_min, ymax=y_max),
+            alpha = 0.5, fill = '#C15757') +
+  geom_rect(data=data.frame(ID_group = "d"),
+            aes(xmin=d_seq[5], xmax=d_seq[6], ymin=y_min, ymax=y_max),
+            alpha = 0.5, fill = '#C15757') +
+  geom_rect(data=data.frame(ID_group = "d"),
+            aes(xmin=d_seq[7], xmax=d_seq[8], ymin=y_min, ymax=y_max),
+            alpha = 0.5, fill = '#C15757') +
+  geom_rect(data=data.frame(ID_group = "d"),
+            aes(xmin=d_seq[9], xmax=d_seq[10], ymin=y_min, ymax=y_max),
+            alpha = 0.5, fill = '#C15757') +
+  # e
+  geom_rect(data=data.frame(ID_group = "e"),
+            aes(xmin=365*10, xmax=365*50, ymin=y_min, ymax=y_max),
+            alpha = 0.5, fill = '#C15757')
+plot_join
+```
+
+
+```{r}
+df_join_MF <-bind_rows(
+  list(df_plot_0.0_MF,
+       df_plot_500.20_MF,
+       df_plot_250.20_MF,
+       df_plot_250.7.5_MF,
+       df_plot_50.7.5_MF),
+  .id = "ID_group_num")
+
+plot_join_MF <- plot_join +
+  geom_line(data = df_join_MF,
+            aes(x = time, y = ratioVar, color = Species)) +
+  facet_wrap(~ID_group, ncol = 1)
+
+plot_join_MF
+```
+
+
+```{r}
+df_join_VVd <-bind_rows(
+  list(df_plot_0.0_VVd,
+       df_plot_500.20_VVd,
+       df_plot_250.20_VVd,
+       df_plot_250.7.5_VVd,
+       df_plot_50.7.5_VVd),
+  .id = "ID_group_num")
+
+plot_join_VVd <- plot_join + 
+  geom_line(data = df_join_VVd,
+            aes(x = time, y = ratioVar, color = Species)) +
+  facet_wrap(~ID_group, ncol = 1)
+
+plot_join_VVd
+```
+
+```{r}
+plot_join <- grid.arrange(plot_join_MF,
+             plot_join_VVd,
+             ncol = 2)
+
+ggsave(filename = "../manuscript/img/plot_join_MF.png", plot = plot_join_MF,
+       width = 7, height = 9)
+ggsave(filename = "../manuscript/img/plot_join_VVd.png", plot = plot_join_VVd,
+       width = 7, height = 9)
+
+ggsave(filename = "../manuscript/img/plot_join.png", plot = plot_join,
+       width = 9, height = 7)
+```
+

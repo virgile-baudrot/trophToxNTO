@@ -225,28 +225,28 @@ df=table_df(model.output)
 ```
 
 
-```{r,warning=FALSE}
-# df.Nbr.ingest=Nbr.ingest(df,params,group.num=1)
-# 
-# p.ingest=plotIngest(df.Nbr.ingest)
-# 
-# ingestion.mustelids=p.ingest[[1]]
-# ingestion.foxes=p.ingest[[2]]
-# 
-# grid.arrange(ingestion.mustelids,ingestion.foxes,nrow=2)
+```{r,warning=FALSE, cache=TRUE}
+df.Nbr.ingest=Nbr.ingest(df,params,group.num=1)
+
+p.ingest=plotIngest(df.Nbr.ingest)
+
+ingestion.mustelids=p.ingest[[1]]
+ingestion.foxes=p.ingest[[2]]
+
+grid.arrange(ingestion.mustelids,ingestion.foxes,nrow=2)
 ```
 
 ### Repartition of mortality in Voles and Mustelids
 
-```{r,warning=FALSE}
-# df.Nbr.mortality=Nbr.mortality(df,params,group.num=1)
-# 
-# p.mortality=plotMortality(df.Nbr.mortality)
-# 
-# mortality.voles=p.mortality[[1]]
-# mortality.mustelids=p.mortality[[2]]
-# 
-# grid.arrange(mortality.voles,mortality.mustelids,nrow=2)
+```{r,warning=FALSE, cache=TRUE}
+df.Nbr.mortality=Nbr.mortality(df,params,group.num=1)
+
+p.mortality=plotMortality(df.Nbr.mortality)
+
+mortality.voles=p.mortality[[1]]
+mortality.mustelids=p.mortality[[2]]
+
+grid.arrange(mortality.voles,mortality.mustelids,nrow=2)
 ```
 
 

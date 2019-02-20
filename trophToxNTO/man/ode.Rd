@@ -4,7 +4,7 @@
 \alias{ode}
 \title{General Solver for Ordinary Differential Equations}
 \description{
-function from package \link{deDolve}.
+function from package \link{deSolve}.
 Solves a system of ordinary differential equations;
  a wrapper around the implemented ODE solvers
 }

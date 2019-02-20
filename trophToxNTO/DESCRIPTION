@@ -14,7 +14,9 @@ Suggests:
     rmarkdown,
     dplyr,
     ggplot2,
+    grid,
     gridExtra,
+    gtable,
     stringr,
     tidyr
 VignetteBuilder: knitr

@@ -28,9 +28,6 @@ pkgLoad <- function(x){
 #'
 #'
 table_df = function(model.output){
-  pkgLoad("dplyr")
-  pkgLoad("tidyr")
-  pkgLoad("stringr")
 
   df=model.output%>%
     as.data.frame()%>%
@@ -54,11 +51,8 @@ table_df = function(model.output){
 #'
 #'
 tableau = function(model.output){
-  pkgLoad("dplyr")
-  pkgLoad("tidyr")
-  pkgLoad("stringr")
 
-  df.1=table_df(model.output)
+    df.1=table_df(model.output)
 
   df.g.2 = df.1 %>%
     gather(compartiment,value,-c(time,group))%>%

@@ -9,15 +9,13 @@ dose.resp.mort(C, LD.50, H.coef, days.death)
 \arguments{
 \item{C}{A numeric vector of the concentration in the individual}
 
+\item{LD.50}{A numeric value of the Lethal Dose 50 (50% of the individual die)}
+
+\item{H.coef}{A numeric value coresponding to the Hill coefficient of the dose-response curve}
+
 \item{days.death}{The number of days to die according to the LD50}
-
-\item{LD50}{A numeric value of the Lethal Dose 50 (50% of the individual die)}
-
-\item{Hill.coef}{A numeric value coresponding to the Hill coefficient of the dose-response curve}
-}
-\value{
-The Dose-Response curve
 }
 \description{
-Take a vecor containing : (i) the concentration in the body, (ii) the Lethal Dose of e species, (iii) the hill coeficient of the curve and (iv) the number of day to die
+Take a vecor containing : (i) the concentration in the body, (ii) the Lethal Dose of e species,
+ (iii) the hill coeficient of the curve and (iv) the number of day to die
 }

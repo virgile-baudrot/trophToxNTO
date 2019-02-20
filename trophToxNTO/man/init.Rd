@@ -8,6 +8,8 @@ init(n.simu, C.soil = 0, C.V = 0, C.M = 0, C.F = 0, D.V = 100,
   D.Vd = 0, D.M = 0.05, D.F = 0.025)
 }
 \arguments{
+\item{n.simu}{number of simulation to take into account}
+
 \item{C.soil}{Concentration broma available in the soil}
 
 \item{C.V}{Concentration broma in individual vole}
@@ -23,8 +25,6 @@ init(n.simu, C.soil = 0, C.V = 0, C.M = 0, C.F = 0, D.V = 100,
 \item{D.M}{Density of the mustelid population}
 
 \item{D.F}{Density of the fox population}
-
-\item{pars.init}{List of parameters for the differential equations}
 }
 \value{
 A list of numeric containing the initial condition for the differential equations to integrate with deSolve package

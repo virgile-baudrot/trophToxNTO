@@ -1,0 +1,765 @@
+---
+title: "Sensitivity Analysis"
+author: "Virgile Baudrot"
+date: "18 février 2019"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r,echo=FALSE,warning=FALSE,include=FALSE}
+knitr::opts_chunk$set(fig.height = 6,
+                      fig.width = 7)
+
+library(trophToxNTO)
+```
+
+```{r}
+times <- seq(from=0, to = 50*365, length = 1e4) ##  30*5 = 5 months 
+## --------------------------- EVENEMENTS -------------------
+root.event=condition(Vole.Level=500,Broma.Level=20*50)[[1]]
+event.func=condition(Vole.Level=500,Broma.Level=20*50)[[2]]
+```
+
+# Single-wise parameters
+
+### $r_V$
+
+```{r r_V, cache=TRUE}
+params <- pars(n=3)
+params$r.V = varPercent_seq(params$r.V, 0.01, 10)
+
+init.p <- init(params$n)
+
+#### --------------------------- Modelisation -------------------
+model_output = ode(y=init.p,
+                   times,
+                   ode.broma.tritrophic, 
+                   parms = params,
+                   events = list(func = event.func, root = TRUE),
+                   rootfun = root.event)
+
+df_Sensitivity <- tab_sensitivity2(model_output, params, key = "r.V")
+```
+
+## $K_V$
+
+```{r K_V, cache=TRUE}
+params <- pars(n=3)
+params$K.V = varPercent_seq(params$K.V, 0.01, 10)
+
+init.p <- init(params$n)
+
+## --------------------------- Modelisation -------------------
+model_output = ode(y=init.p,
+                   times,
+                   ode.broma.tritrophic, 
+                   parms = params,
+                   events = list(func = event.func, root = TRUE),
+                   rootfun = root.event)
+
+df_temp <- tab_sensitivity2(model_output, params, key = "K.V")
+
+df_Sensitivity = rbind(df_Sensitivity, df_temp)
+```
+
+## $a_M$ and $a_Md$
+
+```{r a_M_a_Md, cache=TRUE}
+params <- pars(n=3)
+params$a.M = varPercent_seq(params$a.M, 0.01, 10)
+params$a.Md = varPercent_seq(params$a.Md, 0.01, 10)
+
+
+init.p <- init(params$n)
+
+## --------------------------- Modelisation -------------------
+model_output = ode(y=init.p,
+                   times,
+                   ode.broma.tritrophic, 
+                   parms = params,
+                   events = list(func = event.func, root = TRUE),
+                   rootfun = root.event)
+
+df_temp <- tab_sensitivity2(model_output, params, key = "a.M")
+
+df_Sensitivity = rbind(df_Sensitivity, df_temp)
+```
+
+
+## $a_F$ and $a_Fd$
+
+```{r a_F_a_Fd, cache=TRUE}
+params <- pars(n=3)
+params$a.F = varPercent_seq(params$a.F, 0.01, 10)
+params$a.Fd = varPercent_seq(params$a.Fd, 0.01, 10)
+
+init.p <- init(params$n)
+
+## --------------------------- Modelisation -------------------
+model_output = ode(y=init.p,
+                   times,
+                   ode.broma.tritrophic, 
+                   parms = params,
+                   events = list(func = event.func, root = TRUE),
+                   rootfun = root.event)
+
+df_temp <- tab_sensitivity2(model_output, params, key = "a.F")
+
+df_Sensitivity = rbind(df_Sensitivity, df_temp)
+```
+
+## $h_M$
+
+```{r h_M, cache=TRUE}
+params <- pars(n=3)
+params$h.M = varPercent_seq(params$h.M, 0.01, 10)
+
+init.p <- init(params$n)
+
+## --------------------------- Modelisation -------------------
+model_output = ode(y=init.p,
+                   times,
+                   ode.broma.tritrophic, 
+                   parms = params,
+                   events = list(func = event.func, root = TRUE),
+                   rootfun = root.event)
+
+df_temp <- tab_sensitivity2(model_output, params, key = "h.M")
+
+df_Sensitivity = rbind(df_Sensitivity, df_temp)
+```
+
+## $h_F$
+
+```{r h_F, cache=TRUE}
+params <- pars(n=3)
+params$h.F = varPercent_seq(params$h.F, 0.01, 10)
+
+init.p <- init(params$n)
+
+## --------------------------- Modelisation -------------------
+model_output = ode(y=init.p,
+                   times,
+                   ode.broma.tritrophic, 
+                   parms = params,
+                   events = list(func = event.func, root = TRUE),
+                   rootfun = root.event)
+
+df_temp <- tab_sensitivity2(model_output, params, key = "h.F")
+
+df_Sensitivity = rbind(df_Sensitivity, df_temp)
+```
+
+## $m_M$
+
+```{r m_M, cache=TRUE}
+params <- pars(n=3)
+params$m.M = varPercent_seq(params$m.M, 0.01, 10)
+
+init.p <- init(params$n)
+
+## --------------------------- Modelisation -------------------
+model_output = ode(y=init.p,
+                   times,
+                   ode.broma.tritrophic, 
+                   parms = params,
+                   events = list(func = event.func, root = TRUE),
+                   rootfun = root.event)
+
+df_temp <- tab_sensitivity2(model_output, params, key = "m.M")
+
+df_Sensitivity = rbind(df_Sensitivity, df_temp)
+```
+
+## $d$
+
+```{r d, cache=TRUE}
+params <- pars(n=3)
+params$d = varPercent_seq(params$d, 0.01, 10)
+
+init.p <- init(params$n)
+
+## --------------------------- Modelisation -------------------
+model_output = ode(y=init.p,
+                   times,
+                   ode.broma.tritrophic, 
+                   parms = params,
+                   events = list(func = event.func, root = TRUE),
+                   rootfun = root.event)
+
+df_temp <- tab_sensitivity2(model_output, params, key = "d")
+
+df_Sensitivity = rbind(df_Sensitivity, df_temp)
+```
+
+## $a_FM$
+
+```{r a_FM, cache=TRUE}
+params <- pars(n=3)
+params$a.FM = varPercent_seq(params$a.FM, 0.01, 10)
+
+init.p <- init(params$n)
+
+## --------------------------- Modelisation -------------------
+model_output = ode(y=init.p,
+                   times,
+                   ode.broma.tritrophic, 
+                   parms = params,
+                   events = list(func = event.func, root = TRUE),
+                   rootfun = root.event)
+
+df_temp <- tab_sensitivity2(model_output, params, key = "a.FM")
+
+df_Sensitivity = rbind(df_Sensitivity, df_temp)
+```
+
+## $r_F$
+
+```{r r_F, cache=TRUE}
+params <- pars(n=3)
+params$r.F = varPercent_seq(params$r.F, 0.01, 10)
+
+init.p <- init(params$n)
+
+## --------------------------- Modelisation -------------------
+model_output = ode(y=init.p,
+                   times,
+                   ode.broma.tritrophic, 
+                   parms = params,
+                   events = list(func = event.func, root = TRUE),
+                   rootfun = root.event)
+
+df_temp <- tab_sensitivity2(model_output, params, key = "r.F")
+
+df_Sensitivity = rbind(df_Sensitivity, df_temp)
+```
+
+## $K_F$
+
+```{r K_F, cache=TRUE}
+params <- pars(n=3)
+params$K.F = varPercent_seq(params$K.F, 0.01, 10)
+
+init.p <- init(params$n)
+
+## --------------------------- Modelisation -------------------
+model_output = ode(y=init.p,
+                   times,
+                   ode.broma.tritrophic, 
+                   parms = params,
+                   events = list(func = event.func, root = TRUE),
+                   rootfun = root.event)
+
+tab <- table_df(model_output)
+
+df_temp <- tab_sensitivity2(model_output, params, key = "K.F")
+
+df_Sensitivity = rbind(df_Sensitivity, df_temp)
+```
+
+## $e_M$
+
+```{r e_M, cache=TRUE}
+params <- pars(n=3)
+params$e.M = varPercent_seq(params$e.M, 0.01, 10)
+
+init.p <- init(params$n)
+
+## --------------------------- Modelisation -------------------
+model_output = ode(y=init.p,
+                   times,
+                   ode.broma.tritrophic, 
+                   parms = params,
+                   events = list(func = event.func, root = TRUE),
+                   rootfun = root.event)
+
+df_temp <- tab_sensitivity2(model_output, params, key = "e.M")
+
+df_Sensitivity = rbind(df_Sensitivity, df_temp)
+```
+
+## $LD_{50,V}$
+
+```{r LD.50.V, cache=TRUE}
+params <- pars(n=3)
+params$LD.50.V = varPercent_seq(params$LD.50.V, 0.01, 10)
+
+init.p <- init(params$n)
+
+## --------------------------- Modelisation -------------------
+model_output = ode(y=init.p,
+                   times,
+                   ode.broma.tritrophic, 
+                   parms = params,
+                   events = list(func = event.func, root = TRUE),
+                   rootfun = root.event)
+
+df_temp <- tab_sensitivity2(model_output, params, key = "LD.50.V")
+
+df_Sensitivity = rbind(df_Sensitivity, df_temp)
+```
+
+## $LD_{50,M}$
+
+```{r LD.50.M, cache=TRUE}
+params <- pars(n=3)
+params$LD.50.M = varPercent_seq(params$LD.50.M, 0.01, 10)
+
+init.p <- init(params$n)
+
+## --------------------------- Modelisation -------------------
+model_output = ode(y=init.p,
+                   times,
+                   ode.broma.tritrophic, 
+                   parms = params,
+                   events = list(func = event.func, root = TRUE),
+                   rootfun = root.event)
+
+df_temp <- tab_sensitivity2(model_output, params, key = "LD.50.M")
+
+df_Sensitivity = rbind(df_Sensitivity, df_temp)
+```
+
+## $LD_{50,F}$
+
+```{r LD.50.F, cache=TRUE}
+params <- pars(n=3)
+params$LD.50.F = varPercent_seq(params$LD.50.F, 0.01, 10)
+
+init.p <- init(params$n)
+
+## --------------------------- Modelisation -------------------
+model_output = ode(y=init.p,
+                   times,
+                   ode.broma.tritrophic, 
+                   parms = params,
+                   events = list(func = event.func, root = TRUE),
+                   rootfun = root.event)
+
+df_temp <- tab_sensitivity2(model_output, params, key = "LD.50.F")
+
+df_Sensitivity = rbind(df_Sensitivity, df_temp)
+```
+
+## days to die $V$
+
+```{r days.to.die.V, cache=TRUE}
+params <- pars(n=3)
+params$days.to.die.V = varPercent_seq(params$days.to.die.V, 0.01, 10)
+
+init.p <- init(params$n)
+
+## --------------------------- Modelisation -------------------
+model_output = ode(y=init.p,
+                   times,
+                   ode.broma.tritrophic, 
+                   parms = params,
+                   events = list(func = event.func, root = TRUE),
+                   rootfun = root.event)
+
+df_temp <- tab_sensitivity2(model_output, params, key = "DTD.V")
+
+df_Sensitivity = rbind(df_Sensitivity, df_temp)
+```
+
+## days to die $M$
+
+```{r days.to.die.M, cache=TRUE}
+params <- pars(n=3)
+params$days.to.die.M = varPercent_seq(params$days.to.die.M, 0.01, 10)
+
+init.p <- init(params$n)
+
+## --------------------------- Modelisation -------------------
+model_output = ode(y=init.p,
+                   times,
+                   ode.broma.tritrophic, 
+                   parms = params,
+                   events = list(func = event.func, root = TRUE),
+                   rootfun = root.event)
+
+df_temp <- tab_sensitivity2(model_output, params, key = "DTD.M")
+
+df_Sensitivity = rbind(df_Sensitivity, df_temp)
+```
+
+## days to die $F$
+
+```{r day.die.F, cache=TRUE}
+params <- pars(n=3)
+params$days.to.die.F = varPercent_seq(params$days.to.die.F, 0.01, 10)
+
+init.p <- init(params$n)
+
+## --------------------------- Modelisation -------------------
+model_output = ode(y=init.p,
+                   times,
+                   ode.broma.tritrophic, 
+                   parms = params,
+                   events = list(func = event.func, root = TRUE),
+                   rootfun = root.event)
+
+df_temp <- tab_sensitivity2(model_output, params, key = "DTD.F")
+
+df_Sensitivity = rbind(df_Sensitivity, df_temp)
+```
+
+## $H.V$
+
+```{r H.V, cache=TRUE}
+params <- pars(n=3)
+params$H.V = varPercent_seq(params$H.V, 0.01, 10)
+
+init.p <- init(params$n)
+
+## --------------------------- Modelisation -------------------
+model_output = ode(y=init.p,
+                   times,
+                   ode.broma.tritrophic, 
+                   parms = params,
+                   events = list(func = event.func, root = TRUE),
+                   rootfun = root.event)
+
+df_temp <- tab_sensitivity2(model_output, params, key = "H.V")
+
+df_Sensitivity = rbind(df_Sensitivity, df_temp)
+```
+
+
+## $H.M$
+
+```{r H.M, cache=TRUE}
+params <- pars(n=3)
+params$H.M = varPercent_seq(params$H.M, 0.01, 10)
+
+init.p <- init(params$n)
+
+## --------------------------- Modelisation -------------------
+model_output = ode(y=init.p,
+                   times,
+                   ode.broma.tritrophic, 
+                   parms = params,
+                   events = list(func = event.func, root = TRUE),
+                   rootfun = root.event)
+
+df_temp <- tab_sensitivity2(model_output, params, key = "H.M")
+
+df_Sensitivity = rbind(df_Sensitivity, df_temp)
+```
+
+## $H.F$
+
+```{r H.F, cache=TRUE}
+params <- pars(n=3)
+params$H.F = varPercent_seq(params$H.F, 0.01, 10)
+
+init.p <- init(params$n)
+
+## --------------------------- Modelisation -------------------
+model_output = ode(y=init.p,
+                   times,
+                   ode.broma.tritrophic, 
+                   parms = params,
+                   events = list(func = event.func, root = TRUE),
+                   rootfun = root.event)
+
+df_temp <- tab_sensitivity2(model_output, params, key = "H.F")
+
+df_Sensitivity = rbind(df_Sensitivity, df_temp)
+```
+
+## $B.V$
+
+```{r B.V, cache=TRUE, eval=FALSE}
+params <- pars(n=3)
+params$B.V = varPercent_seq(params$B.V, 0.01, 10)
+
+init.p <- init(params$n)
+
+## --------------------------- Modelisation -------------------
+model_output = ode(y=init.p,
+                   times,
+                   ode.broma.tritrophic, 
+                   parms = params,
+                   events = list(func = event.func, root = TRUE),
+                   rootfun = root.event)
+
+df_temp <- tab_sensitivity2(model_output, params, key = "B.V")
+
+df_Sensitivity = rbind(df_Sensitivity, df_temp)
+```
+
+## $B.M$
+
+```{r B.M, cache=TRUE}
+params <- pars(n=3)
+params$B.M = varPercent_seq(params$B.M, 0.01, 10)
+
+init.p <- init(params$n)
+
+## --------------------------- Modelisation -------------------
+model_output = ode(y=init.p,
+                   times,
+                   ode.broma.tritrophic, 
+                   parms = params,
+                   events = list(func = event.func, root = TRUE),
+                   rootfun = root.event)
+
+df_temp <- tab_sensitivity2(model_output, params, key = "B.M")
+
+df_Sensitivity = rbind(df_Sensitivity, df_temp)
+```
+
+## $B.F$
+
+```{r B.F, cache=TRUE}
+params <- pars(n=3)
+params$B.F = varPercent_seq(params$B.F, 0.01, 10)
+
+init.p <- init(params$n)
+
+## --------------------------- Modelisation -------------------
+model_output = ode(y=init.p,
+                   times,
+                   ode.broma.tritrophic, 
+                   parms = params,
+                   events = list(func = event.func, root = TRUE),
+                   rootfun = root.event)
+
+df_temp <- tab_sensitivity2(model_output, params, key = "B.F")
+
+df_Sensitivity = rbind(df_Sensitivity, df_temp)
+```
+
+## $max.intake.C$
+
+```{r max.intake.C, cache=TRUE}
+params <- pars(n=3)
+params$max.intake.C = varPercent_seq(params$max.intake.C, 0.01, 10)
+
+init.p <- init(params$n)
+
+## --------------------------- Modelisation -------------------
+model_output = ode(y=init.p,
+                   times,
+                   ode.broma.tritrophic, 
+                   parms = params,
+                   events = list(func = event.func, root = TRUE),
+                   rootfun = root.event)
+
+df_temp <- tab_sensitivity2(model_output, params, key = "max.intake.C")
+
+df_Sensitivity = rbind(df_Sensitivity, df_temp)
+```
+
+## $D50.intake.C$
+
+```{r D50.intake.C, cache=TRUE}
+params <- pars(n=3)
+params$D50.intake.C = varPercent_seq(params$D50.intake.C, 0.01, 10)
+
+init.p <- init(params$n)
+
+## --------------------------- Modelisation -------------------
+model_output = ode(y=init.p,
+                   times,
+                   ode.broma.tritrophic, 
+                   parms = params,
+                   events = list(func = event.func, root = TRUE),
+                   rootfun = root.event)
+
+df_temp <- tab_sensitivity2(model_output, params, key = "D50.intake.C")
+
+df_Sensitivity = rbind(df_Sensitivity, df_temp)
+```
+
+
+## $eta.M$
+
+```{r eta.M, cache=TRUE}
+params <- pars(n=3)
+params$eta.M = varPercent_seq(params$eta.M, 0.01, 10)
+
+init.p <- init(params$n)
+
+## --------------------------- Modelisation -------------------
+model_output = ode(y=init.p,
+                   times,
+                   ode.broma.tritrophic, 
+                   parms = params,
+                   events = list(func = event.func, root = TRUE),
+                   rootfun = root.event)
+
+df_temp <- tab_sensitivity2(model_output, params, key = "eta.M")
+
+df_Sensitivity = rbind(df_Sensitivity, df_temp)
+```
+
+
+
+## $eta.F$
+
+```{r eta.F, cache=TRUE}
+params <- pars(n=3)
+params$eta.F = varPercent_seq(params$eta.F, 0.01, 10)
+
+init.p <- init(params$n)
+
+## --------------------------- Modelisation -------------------
+model_output = ode(y=init.p,
+                   times,
+                   ode.broma.tritrophic, 
+                   parms = params,
+                   events = list(func = event.func, root = TRUE),
+                   rootfun = root.event)
+
+df_temp <- tab_sensitivity2(model_output, params, key = "eta.F")
+
+df_Sensitivity = rbind(df_Sensitivity, df_temp)
+```
+
+## $k.out.V$
+
+```{r k.out.V, cache=TRUE}
+params <- pars(n=3)
+params$k.out.V = varPercent_seq(params$k.out.V, 0.01, 10)
+
+init.p <- init(params$n)
+
+## --------------------------- Modelisation -------------------
+model_output = ode(y=init.p,
+                   times,
+                   ode.broma.tritrophic, 
+                   parms = params,
+                   events = list(func = event.func, root = TRUE),
+                   rootfun = root.event)
+
+df_temp <- tab_sensitivity2(model_output, params, key = "k.out.V")
+
+df_Sensitivity = rbind(df_Sensitivity, df_temp)
+```
+
+
+## $k.out.M$
+
+```{r k.out.M, cache=TRUE}
+params <- pars(n=3)
+params$k.out.M = varPercent_seq(params$k.out.M, 0.01, 10)
+
+init.p <- init(params$n)
+
+## --------------------------- Modelisation -------------------
+model_output = ode(y=init.p,
+                   times,
+                   ode.broma.tritrophic, 
+                   parms = params,
+                   events = list(func = event.func, root = TRUE),
+                   rootfun = root.event)
+
+df_temp <- tab_sensitivity2(model_output, params, key = "k.out.M")
+
+df_Sensitivity = rbind(df_Sensitivity, df_temp)
+```
+
+
+
+## $k.out.F$
+
+```{r k.out.F, cache=TRUE}
+params <- pars(n=3)
+params$k.out.F = varPercent_seq(params$k.out.F, 0.01, 10)
+
+init.p <- init(params$n)
+
+## --------------------------- Modelisation -------------------
+model_output = ode(y=init.p,
+                   times,
+                   ode.broma.tritrophic, 
+                   parms = params,
+                   events = list(func = event.func, root = TRUE),
+                   rootfun = root.event)
+
+df_temp <- tab_sensitivity2(model_output, params, key = "k.out.F")
+
+df_Sensitivity = rbind(df_Sensitivity, df_temp)
+```
+
+## $k.0$
+
+```{r k.0, cache=TRUE}
+params <- pars(n=3)
+params$k.0 = varPercent_seq(params$k.0, 0.01, 10)
+
+init.p <- init(params$n)
+
+## --------------------------- Modelisation -------------------
+model_output = ode(y=init.p,
+                   times,
+                   ode.broma.tritrophic, 
+                   parms = params,
+                   events = list(func = event.func, root = TRUE),
+                   rootfun = root.event)
+
+df_temp <- tab_sensitivity2(model_output, params, key = "k.0")
+
+df_Sensitivity = rbind(df_Sensitivity, df_temp)
+```
+
+
+```{r}
+## save(df_Sensitivity, file = "data/df_Sensitivity.rda")
+load(file = "data/df_Sensitivity.rda")
+plt <- ggplot(data = df_Sensitivity,
+       aes(x = parameter, xend = parameter))+
+  theme_minimal()
+
+plt +  geom_segment(aes(y = SSE_min, yend = SSE_max))
+plt +  geom_segment(aes(y = Mean_V_min, yend = Mean_V_max))
+plt +  geom_segment(aes(y = Mean_M_min, yend = Mean_M_max))
+plt +  geom_segment(aes(y = Mean_F_min, yend = Mean_F_max))
+plt +  geom_segment(aes(y = V_inf50_min, yend = V_inf50_max))
+plt +  geom_segment(aes(y = nrb_AR_min, yend = nrb_AR_max))
+plt +  geom_segment(aes(y = M_50AR_min, yend = M_50AR_max))
+plt +  geom_segment(aes(y = M_50natural_min, yend = M_50natural_max))
+```
+
+
+# Mixed parameters
+
+```{r}
+params = pars(n=1)
+init.p <- init(params$n)
+# # Set fix parameters
+# range_param = rbind(unlist(fix_pVar_pars(params,-0.1)), unlist(fix_pVar_pars(params,0.1)))
+# ls_params = as.list(as.data.frame(range_param))
+# ls_params_expand <- expand.grid(ls_params[2:ncol(range_param)])
+
+# # Random parameters
+ls_params_expand <- lapply(1:100, function(i) rand_pVar_pars(params))
+
+ls_randSens <- lapply(1:length(ls_params_expand), function(i){
+  tryCatch({
+    model_output = ode(y=init.p,
+                       times,
+                       ode.broma.tritrophic, 
+                       parms = ls_params_expand[[i]],
+                       events = list(func = event.func, root = TRUE),
+                       rootfun = root.event)
+    df_temp <- tab_sensitivity(model_output, ls_params_expand[[i]])
+    return(df_temp)},
+    error=function(e) NULL)
+})
+
+# mat_randSens <- do.call("rbind", ls_randSens)
+df_randSens <- dplyr::bind_rows(ls_randSens)
+# save(df_randSens, file = "df_randSens.rda")
+```
+
+
+```{r}
+library(GGally)
+# ggpairs(df_randSens[, 2:8])
+ggpairs(df_randSens[, c("Mean_V_set","Mean_M_set","Mean_F_set","V_inf50_set","nrb_AR_set","M_50AR_set","M_50natural_set")])
+```
+

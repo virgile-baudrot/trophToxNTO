@@ -6,6 +6,9 @@
 \usage{
 ode.broma.tritrophic(Time, State, Pars)
 }
+\arguments{
+\item{Pars}{}
+}
 \value{
 A derivative list to integrate with deSolve package
 }
