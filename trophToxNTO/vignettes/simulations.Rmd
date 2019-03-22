@@ -50,7 +50,7 @@ graphique_3(params$n,times,model.output_0.0)
 
 ```{r model.output_500.20, cache=TRUE}
 # --------------------------- EVENEMENTS -------------------
-root.event=condition(Vole.Level=500,Broma.Level=20*50)[[1]]
+root.event=condition(Vole.Level=500,Broma.Level=20*50)[[1]] # kg * mg/kg
 event.func=condition(Vole.Level=500,Broma.Level=20*50)[[2]]
 
 # --------------------------- Modelisation -------------------

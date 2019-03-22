@@ -74,9 +74,9 @@ $^3$ IREC. Instituto de Investigación en Recursos Cinegéticos\\
 $^4$ FREDON Franche-Comté, Espace Valentin Est, 12, Rue de Franche-Comté - Bât E, 25480 Ecole-Valentin, France\\
 $^5$ School of Biological Sciences, University of Aberdeen, Zoology Building, Tillydrone Avenue, Aberdeen AB24 2TZ, Scotland, UK\\
 ~\\
-$^*$ Corresponding authors: \textcolor{red}{virgile.baudrot@posteo.net or x.lambin@abdn.ac.uk}
+$^*$ Corresponding authors: \textcolor{gray}{virgile.baudrot@posteo.net or x.lambin@abdn.ac.uk}
 
-\paragraph{Running Title} \textcolor{red}{Bufferscapes to preserve Non-Target Organism / Ecosystem services}
+\paragraph{Running Title} \textcolor{gray}{TO CHANGE: Bufferscapes to preserve Non-Target Organism / Ecosystem services}
 
 \vspace{.5cm}
 
@@ -101,7 +101,7 @@ Since the “green revolution” following the 1950s, pesticides use has increas
 
 Voles and other grassland rodent species undergo multi-annual population cycles (e.g.,  \cite{Krebs2013}. At their peaks, they may attain extremely high densities, causing substantial damage to grass/cultivated crops and forestry and conflicts with humans \citep{Delattre2009}. Farmers worldwide expand financial resources to purchase and spread anticoagulant rodenticides (hereafter AR), hoping to reduce vole populations and damages and increase profits despite the investment required \citep{Stenseth2003}. They do so according to protocols, equivalent to farmer functional responses (hereafter FFR), that involve varying amounts of AR spread in response to different thresholds in vole densities. 
 
-Voles and many small rodents are perceived as pests, but they are also keystone species, crucial to the functioning of grassland ecosystems, as well as being the prey of numerous predators, including species of conservation concern \citep{Delibes-Mateos2011, Coeurdassier2014}. Their population cycles create pulses of resources crucial to the viability of a wide range of resident predators and the aggregation of mobile avian vole predators \citep{Korpimaki1991}. The smallest mustelids (e.g. weasels Mustela nivalis) are specialist vole predators. Their numerical response has been shown theoretically to be necessary for generating predator-prey cycles \citep{Hanski1991}. They are said to be responsible for driving 3-to-5-year vole cycles in Fennoscandia (specialist predation hypothesis) \citet{Hanski1991}. Generalist resident predators like foxes (Vulpes vulpes) are expected to have regulatory and limiting effects on voles, owing to dietary plasticity that slows down vole population increase at low density \citet{Hanski1991}. Foxes do not show numerical responses to vole abundance \citep{Weber2002} but they influence the food chain through occasional killing and consumption of bite-sized mustelids. Mustelids form a small proportion of fox diet (0-10\%) but their offtake could represent a significant portion of the population (reviewed in \citet{Lambin2017}).
+Voles and many small rodents are perceived as pests, but they are also keystone species, crucial to the functioning of grassland ecosystems, as well as being the prey of numerous predators, including species of conservation concern \citep{Delibes-Mateos2011, Coeurdassier2014}. Their population cycles create pulses of resources crucial to the viability of a wide range of resident predators and the aggregation of mobile avian vole predators \citep{Korpimaki1991}. The smallest mustelids (e.g. weasels Mustela nivalis) are specialist vole predators. Their numerical response has been shown theoretically to be necessary for generating predator-prey cycles \citep{Hanski1991}. They are said to be responsible for driving 3-to-5-year vole cycles in Fennoscandia (specialist predation hypothesis) \citet{Hanski1991}. Generalist resident predators like foxes (Vulpes vulpes) are expected to have regulatory and limiting effects on voles, owing to dietary plasticity that slows down vole population increase at low density \citet{Hanski1991}. Foxes do not show numerical responses to vole abundance \citep{Weber2002} but they influence the food chain through occasional killing and consumption of bite-sized mustelids. Mustelids form a small proportion of fox diet (0-10\%) but their offtake could represent a significant portion of the population (reviewed in \citet{Lambin2018}).
 
 Anticoagulant rodenticides are non-selective toxicants with deleterious effects on non-target fauna (e.g. \cite{Coeurdassier2014}. Despite AR being exclusively licensed for rodent control, a large number of predator species are secondarily exposed to AR \citep{Sanchez-Barbudo2012}. Repeated consumption of dead and sub-lethally intoxicated voles reduced fox abundance in farmland in eastern France \citep{Jacquot2013} and ARs caused short-term declines in stoats in New Zealand \citep{Alterio1996}. Rodent-eating mustelid populations are affected by ARs given the pervasive levels of contamination reported \citep{McDonald1998}. Thus, there is little doubt ARs use inadvertently depresses predator populations. As they likely limit vole populations, it is essential to understand when AR use becomes counterproductive by altering the pest population dynamics, producing more frequent outbreaks and high residual vole abundance.
 
@@ -115,7 +115,7 @@ We specified and parameterized the tri-trophic system of voles-mustelids-foxes w
 
 \subsection{Model for the tri-trophic dynamic}
 
-We considered a tri-trophic system described by Figure~\ref{fig:scheme} and equations (1-5); parameterization is provided in Table~\ref{tab:parameterization}. Voles, denoted V, were the primary prey, Mustelids, M, intermediate predators, and Foxes, F, were top predators, consuming voles and mustelids. For each species, the instantaneous variation of population size over time is:
+We considered a tri-trophic system described by Figure~\ref{fig:scheme} and equations (1-5); parameterization is provided in Table~\ref{tab:parameterization}. Voles, denoted $V$, were the primary prey, Mustelids, $M$, intermediate predators, and Foxes, $F$, were top predators, consuming voles and mustelids. For each species, the instantaneous variation of population size over time is:
 
 \begin{equation}
 \left\{
@@ -133,7 +133,7 @@ The vole population followed a logistic growth rate, with $r_V$  the maximal rep
 %
 The vole population was preyed upon by mustelid and fox populations. The vole consumption rate at different vole densities was described by functional responses ($\Phi_{V,M}$ for mustelids, $\Phi_{V,F}$  for foxes), see equations \eqref{eq:functionResponse}.
 %
-We treated small mustelids as vole specialist predators \citep{King2006}, assuming a Holling Type 2 functional response with attack rate $a_M$ and handling time $h_M$ (equation \eqref{eq:functionResponse}). We then represented foxes feeding on voles and mustelids by a multi-species functional response derived from Holling Type 3, referring to generalist feeding behaviour \citep{Baudrot2016}. For that, we denoted $a_{VF}$ and $a_{MF}$ the fox attack rate on voles and mustelids respectively. The parameter hF was the handling time for foxes.
+We treated small mustelids as vole specialist predators \citep{King2006}, assuming a Holling Type 2 functional response with attack rate $a_M$ and handling time $h_M$ (equation \eqref{eq:functionResponse}). We then represented foxes feeding on voles and mustelids by a multi-species functional response derived from Holling Type 3, referring to generalist feeding behaviour \citep{Baudrot2016}. For that, we denoted $a_{VF}$ and $a_{MF}$ the fox attack rate on voles and mustelids respectively. The parameter $h_F$ was the handling time for foxes.
 
 
 \begin{equation}
@@ -157,12 +157,12 @@ We assumed foxes had a logistic growth rate function, parameterized with maximal
 
 Figure~\ref{fig:scheme} represents the whole study system. Rodenticide is spread in grasslands during treatments, denoted $T_{Broma}(V)$, triggered by vole density $V$ (FFR described in Table~\ref{tab:results}).
 %
-Firstly, baits (50 mg.kg$^{-1}$  of bromadiolone, hereafter AR) were spread in grasslands at quantity 7.5 to 20 kg.ha$^{-1}$.
+Firstly, baits (50 mg kg$^{-1}$  of bromadiolone, hereafter AR) were spread in grasslands at quantity 7.5 to 20 kg ha$^{-1}$ day$^{-1}$. Notation day$^{-1}$ stands because of the daily time resolution.
 %
-Such quantity, $C$, was available for voles, and a proportion disappeared in the environment at rate $k_0$ (set at $k_0 = 0.0815$) \citep{Sage2008}. The proportion consumed per vole, with rate $\kappa(C)$, was assumed to be an increasing function. The function $\kappa(C)$ was characterized by a maximum ingestion $M_{in}$, and a half-saturation constant for ingestion $D_{in}$ in [mg.kg$^{-1}$]:
+Such quantity, $C$, was available for voles, and a proportion disappeared in the environment at rate $k_0$ (set at $k_0 = 0.0815$) \citep{Sage2008}. The proportion consumed per vole, with rate $\kappa(C)$, was assumed to be an increasing function. The function $\kappa(C)$ was characterized by a maximum ingestion $M_{in}$, and a half-saturation constant for ingestion $D_{in}$ in [mg kg$^{-1}$]:
 
 \begin{equation}
-\kappa_C= \dfrac{M_{in}\times C}{D_{in} + C}
+\kappa(C)= \dfrac{M_{in}\times C}{D_{in} + C}
 \end{equation}
 
 For the toxicokinetics of AR (i.e. internal compound dynamics) leading to AR concentrations in animal body (voles, mustelids and foxes), we considered an uptake without biotransformation and time-regulated distribution, (i.e. AR concentration in the body of animals was instantly homogeneous) and that the whole body was consumed or scavenged without selection/rejection of tissues-organs. We also assumed disappearance including excretion of the parent compound and metabolisation, and that metabolites were non-toxic and/or excreted in the scats. 
@@ -178,7 +178,8 @@ AR was ingested by foxes with a rate proportional to the functional response of 
 We used log-logistic equations for describing dose-dependent mortality of animals exposed to AR. Vole and predator mortality rates due to AR $\mu_X(C_X)$ ($X$ referring to the considered species) were expressed by equation (5):
 
 \begin{equation}
-\mu_X(C_X) = \dfrac{1}{\text{experiment duration}} \times \dfrac{1}{1+ (LD_{50}/C_X)^H}
+\mu_X(C_X) = \dfrac{1}{\text{experiment duration}} \times \left( 1- \dfrac{1}{1+ (LD_{50}/C_X)^H} \right) 
+\label{eq:muX}
 \end{equation}
 
 where $LD_{50}$ was the daily median lethal dose (50\% of population dying) with different values for voles (2 mg kg$^{-1}$), mustelids (2.1 mg kg$^{-1}$) and foxes (0.5 mg kg$^{-1}$, Table~\ref{tab:parameterization}). $H$ is the Hill's coefficient, modulating the curve steepness and was estimated to fit the sparse data we have (Table~\ref{tab:parameterization}). Mortality rates considered the duration of AR toxicity from experiments of up to 6 days \citep{Sage2010}.
@@ -190,29 +191,59 @@ We considered a range of realistic FFR spanning treatments during vole outbreaks
 Our simulations tracked the linked vole-mustelid-fox dynamics for 40 years, after a “burn-in” period of 10 years to reduce dependency of results upon initial conditions, to observe several vole cycles and to characterise AR effects on these species population dynamics. This burn-in period also had AR treatment triggered at specific vole densities and with a given rodenticide quantity for each FFR (see Table~\ref{tab:results}). The burn-in phase was selected according to a set of simulations with different initial conditions. Those simulations showed that in a given FFR (i.e., same threshold of vole density and amount of AR spread), the dynamics of the population were converging toward a similar pattern. 
 In order to assess the impact of FFR on both agriculture and conservation interests, we estimated the following cost functions: (i) Number of treatment events per FFR ; (ii) Cumulative amount of AR (kg) ; (iii) Proportion of time when the AR-induced mortality of mustelids higher than 50\% (i.e. lethal exposure profile killing 50\% of mustelid population) ; (iv) Proportion of time when the mortality of mustelids was higher than 50\% due to natural mortality; (v) Proportion of time when the vole density was below 50 voles ha$^{-1}$, as a proxy for time when forage grass grows with low herbivore influence; (vi) Mean vole, mustelid and fox densities.
 
+\subsection{Numerical Simulation and Sensitivity Analysis}
+
+All numerical analysis have been done using the Open language R and particularly the ODE solver package \textit{deSolve} \citep{Soetaert2010}. Model implementation and code to run analysis are available on the Github repository \url{https://github.com/virgile-baudrot/trophToxNTO/}.
+%
+From simulations, a sensitivity analysis allowed to study \textit{how uncertainties in the model output are apportioned to different sources of uncertainty in the model input} \citep{Saltelli2019}.
+%
+A first approach consisted in changing parameter within a 10\% range around the original value \textit{one at a time}, and a second global approach consisted in using the first-order Sobol's sensitivity index $S_i$ defined as $S_i = \mathbb{V}(\mathbb{E}_{-i}(y \vert x_i)) / \mathbb{V}(y)$, where $\mathbb{V}(y)$ is the variance of $y$ when all factors are allowed to vary, $\mathbb{E}_{x\sim i}(y \vert x_i))$ the mean of $y$ when one factor is fixed \citep{Sobol1993}. We defined the domain of variation with a beta distribution within an hyperspace of plus or minus 10\% from the original value for all parameters.
+
 \section{Results}
 
 \subsection{Population dynamics}
 
 Allowing for mortality by predators ingesting AR-poisoned voles changed the outcome of predator-prey dynamics involving vole, mustelid and fox populations. Secondary poisoning led to a rich spectrum of emergent dynamics according to the FFR to vole abundance.  
-Without AR (FFR a), vole dynamics were regulated by mustelid predation that gave rise to 6-year cycles (Figs. 2 and 3; maximal vole and mustelid densities were around 600 ind.ha$^{-1}$ and 2 ind.ha$^{-1}$ respectively). The fox population remained at its carrying capacity (i.e., 0.03 ind. ha$^{-1}$, see Table~\ref{tab:parameterization}).  
+Without AR (FFR a), vole dynamics were regulated by mustelid predation that gave rise to 6-year cycles (Figs. 2 and 3; maximal vole and mustelid densities were around 600 ind ha$^{-1}$ and 2 ind ha$^{-1}$ respectively). The fox population remained at its carrying capacity (i.e., 0.03 ind ha$^{-1}$, see Table~\ref{tab:parameterization}).  
 
 Under FFR b (high vole density threshold triggering treatment and high AR amount per treatment) and FFR d (intermediate threshold and low AR amount), vole dynamics were sequentially regulated by either AR treatments, which we refer to as farmer-regulated phase (FR in Figures 2 \& 3), or by mustelids, mustelids-regulated phase (MR), alternately (MR in Figures 2 \& 3). Farmer-regulated periods started when densities of living voles triggered treatments. This produced sudden declines of live voles followed by increases of dead voles. However, the vole population re-grew quickly which triggered frequent further treatments and pulses of availability of contaminated (both live and dead) voles. In FFR d (intermediate threshold and low AR), vole declines were not as deep as when pulses of AR amount were high (FFR b), owing to the reduced rodenticide amount per treatment. Mustelids and foxes also experienced AR-induced declines during this period. Under FFRs b (high threshold density, high AR) and d (intermediate threshold, low AR), mustelid-regulated periods started when mustelid numbers grew slowly to a peak, which depressed vole density, precluding rodenticide treatments and releasing the fox population from secondary poisoning, such that its abundance rebounded. Vole depletion by mustelids and subsequent mustelid declines allowed the vole population to grow again up to threshold densities and initiated a new period of regulation by farmers.
-Vole dynamics were permanently regulated by AR treatment under FFR c (intermediate threshold, high AR, Figs. 2c, 3c). Populations of live and dead voles experienced high frequency fluctuations (around 2 peaks every year) driven by AR. As AR treatments were frequent, being triggered by voles peaks, contaminated dead voles were always abundant (peaks at 90 ind.ha$^{-1}$), and mustelid and fox densities remained low (mustelids, converging to 0 ind.ha$^{-1}$; foxes, 0.003-0.006 ind. ha$^{-1}$) with only short-term fluctuations (2 peaks every year, following vole cycles).
-With FFR e (low threshold, low AR), vole populations were maintained by farmers at around 50 voles ha$^{-1}$ (Figs. 2e and 3e). The population of live voles was buffered by treatments. Additionally, whenever voles reached densities triggering treatment, predator populations experienced strong declines. However, fox densities (0.01-0.015 ind. ha$^{-1}$) were higher compared to FFR c (intermediate threshold, high AR), reflecting the reduced amount of AR used (7.5 kg) and transferred to foxes as there were lower vole densities. The maximum numbers of dead voles under this FFR e was relatively low (highest around 15 ind.ha$^{-1}$) but, due to frequent treatments, there was a steady replenishment of contaminated dead voles. This, in turn, induced mustelid and fox mortality and population declines (Supporting Information). Additionally, low availability of live voles triggered small mustelids mortality through starvation down to abundances similar to those resulting from AR use (Supporting Information). 
+Vole dynamics were permanently regulated by AR treatment under FFR c (intermediate threshold, high AR, Figs. 2c, 3c). Populations of live and dead voles experienced high frequency fluctuations (around 2 peaks every year) driven by AR. As AR treatments were frequent, being triggered by voles peaks, contaminated dead voles were always abundant (peaks at 90 ind ha$^{-1}$), and mustelid and fox densities remained low (mustelids, converging to 0 ind ha$^{-1}$; foxes, 0.003-0.006 ind ha$^{-1}$) with only short-term fluctuations (2 peaks every year, following vole cycles).
+With FFR e (low threshold, low AR), vole populations were maintained by farmers at around 50 voles ha$^{-1}$ (Figs. 2e and 3e). The population of live voles was buffered by treatments. Additionally, whenever voles reached densities triggering treatment, predator populations experienced strong declines. However, fox densities (0.01-0.015 ind ha$^{-1}$) were higher compared to FFR c (intermediate threshold, high AR), reflecting the reduced amount of AR used (7.5 kg) and transferred to foxes as there were lower vole densities. The maximum numbers of dead voles under this FFR e was relatively low (highest around 15 ind ha$^{-1}$) but, due to frequent treatments, there was a steady replenishment of contaminated dead voles. This, in turn, induced mustelid and fox mortality and population declines (Supporting Information). Additionally, low availability of live voles triggered small mustelids mortality through starvation down to abundances similar to those resulting from AR use (Supporting Information). 
 
 \subsection{Comparison between farmer functional responses in terms of cost functions}
 
 As expected, spreading AR generally reduced vole densities (Table~\ref{tab:results}) but the extent to which it also affected predators and the costs and benefits for conservation and farmer’s interests varied widely. 
-The FFR b (high threshold, high AR) implied the lowest number of treatments (mean 0.87 year$^{-1}$), while FFR d (intermediate threshold, low AR) resulted in the lowest amount of AR used (mean 14.5 kg.ha$^{-1}$. year$^{-1}$). The FFR e (low threshold, low AR) had the lowest mustelid mortality due to AR (no instance in 40 years) but maximised starvation-induced mortality of mustelids (Table~\ref{tab:results}). Additionally, FFR e (low threshold, low AR) had the highest proportion of time with <50 voles ha$^{-1}$, (96\% of study period). When considering the effectiveness in reducing mean vole densities, FFR e (low threshold, low AR) ranked highest followed by FFR c (intermediate threshold, high AR). The FFR d (intermediate threshold, low AR) and b (high threshold, high AR) allowed the highest mean densities of mustelids and foxes respectively. 
-Comparison of these protocols indicates that FFR d (intermediate threshold and low AR) delivered the best compromise between farm production and conservation interests (Table~\ref{tab:results}). It had the lowest AR quantity applied (mean 14.5 kg.ha$^{-1}$.year$^{-1}$) and the highest mean densities of mustelids (0.47 ha$^{-1}$) and foxes (0.02 ha$^{-1}$). The number of treatments was among the lowest values (1.6 treatment year$^{-1}$). Its drawback was that it only suppressed voles at low densities (<50 voles ha$^{-1}$ for 21\% of time).  Conversely, emergent mean vole densities were low to intermediate (122 voles ha$^{-1}$). 
+The FFR b (high threshold, high AR) implied the lowest number of treatments (mean 0.87 year$^{-1}$), while FFR d (intermediate threshold, low AR) resulted in the lowest amount of AR used (mean 14.5 kg ha$^{-1}$ year$^{-1}$). The FFR e (low threshold, low AR) had the lowest mustelid mortality due to AR (no instance in 40 years) but maximised starvation-induced mortality of mustelids (Table~\ref{tab:results}). Additionally, FFR e (low threshold, low AR) had the highest proportion of time with < 50 voles' ind ha$^{-1}$, (96\% of study period). When considering the effectiveness in reducing mean vole densities, FFR e (low threshold, low AR) ranked highest followed by FFR c (intermediate threshold, high AR). The FFR d (intermediate threshold, low AR) and b (high threshold, high AR) allowed the highest mean densities of mustelids and foxes respectively. 
+Comparison of these protocols indicates that FFR d (intermediate threshold and low AR) delivered the best compromise between farm production and conservation interests (Table~\ref{tab:results}). It had the lowest AR quantity applied (mean 14.5 kg ha$^{-1}$.year$^{-1}$) and the highest mean densities of mustelids (0.47 ha$^{-1}$) and foxes (0.02 ha$^{-1}$). The number of treatments was among the lowest values (1.6 treatment year$^{-1}$). Its drawback was that it only suppressed voles at low densities (<50 voles ha$^{-1}$ for 21\% of time).  Conversely, emergent mean vole densities were low to intermediate (122 voles ha$^{-1}$). 
 Other FFR regimes were poorer compromises either because mustelids were kept at low densities (FFR  c, intermediate threshold, high AR, and FFR e, low threshold, low AR) or had relatively high mean vole densities (229 voles ha$^{-1}$, FFR b, high threshold, high AR). In summary, FFR d (intermediate threshold, low AR) was the best compromise because it minimized the impact over predator populations contributing to the natural reduction of vole densities with the lowest quantity of AR applied for farm production interests.
 
 \subsection{Influence of intra-guild predation}
 
 Figure~\ref{fig:intraguild} shows the system dynamics under FFR d, where successive farmer-regulated and mustelids-regulated phases occured. This simulation shows that the removal of foxes did not eliminate the successions of mustelids-regulated and farmer-regulated phases. However, the mustelid regulated period allowed short-term peaks of voles, suggesting the emergence of a classical one-predator - one-prey cycles interrupted by a farmer-regulated period. Without foxes, population dynamics of mustelids presented a more chaotic behaviour, while it presented regular cyclic pattern with fox occurrence. Therefore, this simple model suggests a stabilizing role of a generalist predator (foxes in this system) during the mustelid-regulated period. At the end of the mustelid-regulated period, foxes strongly contributed to vole mortality and, to a lesser degree, mustelid mortality. Consequently, the removal of foxes implied less predation over voles during the mustelid regulated period, and short-term vole releases from mustelid predation. The 2-year rolling mean of vole density (blue lines in Figure~\ref{fig:intraguild}) illustrates the change of regime from farmer-regulated to mustelids-regulated phases. Indeed, the amplitude of averaged vole densities (i.e., the amplitude of vole cycles for the 2-year rolling mean) was relatively stable at the beginning of farmer regulation period and then suddenly decreased to become minimal before sharply increasing, announcing the regime change. These changes in density amplitude may be used as an early-warning signal of the regime transition. 
 
+\subsection{Sensitivity of model under this parameterization}
+
+Figure~\ref{fig:sobol_sensitivity} and Figure~\ref{fig:sensitivity} show the sensitivity of each parameter used in the model defined in d (i.e., 7.5kg of AR at threshold density of 250 voles).
+%
+Figure~\ref{fig:sobol_sensitivity} represent the global sensitivity where we computed a first order sensitivity index \citep{Sobol1993, Saltelli2019} given the contribution of each parameter to the variance of the model.
+%
+Figure~\ref{fig:sensitivity} is a one at time analysis \citep{Saltelli2019} where parameters are move +/- 10\% of the fixed value as defined in scenario d (see Table~\ref{tab:parameterization}).
+
+Crossing all cost functions to test the sensitivity of model parameters, the influence of each parameter appears quite homogeneous. That is there is no useless parameter or in return one that would lead all.
+%
+Taken cost functions separately, the sensitivity to parameters present some differences.
+%
+Figure~\ref{fig:sobol_sensitivity} shows an homogeneity of parameter sensitivity on the mean of mustelids density, revealing the complexity underlying this latent variable.
+
+% For instance, the vole carrying capacity $K_V$ has a strong influence on density of predators and the number of treatments, but few on the vole density (i.e., mean vole density and period of time with less than 50 vole/ha) reflecting the fact that vole population is totally regulated by predation (i.e., density of predators) or poisoning (i.e. number of treatment) but not by resource of voles.
+%
+% On the contrary, lethal dose for 50\% of mustelids, $LD_{50,M}$, has a strong influence on mean vole density and is weaker for other cost functions.
+%
+% From the sensitivity analysis, the drivers of the mean density of mustelids are the mustelids' resources, which is the carrying capacity of vole, $K_V$, and the parameters reflecting intrinsic mustelids parameter as the natural mortality rate $m_M$, and toxicological parameters of mustelids as the Hill's coefficient, the lethal dose for 50\%, and those of voles as the half saturation intake rate of contaminant for voles $D_{in}$ and the vole excretion rate of AR, denoted $k_{out,V}$.
+
+
 \section{Discussion} 
+
 Considering that rodenticide kills not only voles but also their predators through secondary poisoning, our models show that AR profoundly changes the outcome of predator-prey dynamics involving vole, mustelid and fox populations beyond what mere intuition could elucidate. Our study reveals how the dual influences of the amount of pesticide spread and the vole density threshold triggering AR spread drives (i) pesticide spreading frequency, (ii) predation ecosystem service, and subsequently (iii) the control of pest outbreaks. Two types of a rich spectrum of emergent dynamics, including farmer or mustelid regulation deviating from classical predator prey dynamics arose because poisoned voles acted as “super-predators”. 
 
 \subsection{Modelling farmer regulation into a classical predator-prey system}
@@ -231,7 +262,6 @@ Under FFR c (intermediate vole density threshold and high AR) and FFR e (low vol
 \citep{Jacquot2013}. Secondary poisoning of predators is an established reality \citep{Berny2007}.  Through modelling, we formalised the insight that some poison deployment protocols, including those presently used in the empirical system which motivated our study, are counterproductive if employed on a large scale, suppressing natural predator regulation of pest rodents. It has been long known that poisoning rodents with AR permeates the food chain at peak abundance and achieves little in terms of protecting crops and may have strong deleterious impact (FFR b and c) \citep{Olea2009}. In Franche-Comté, a change in treatment protocols, from controlling voles at high densities to low-intermediate densities, has reduced the mortality of non-target species (including foxes) \citep{Jacquot2013}. Nevertheless, deployment regimes of pesticides that can contaminate the food chain should also enable periods of time which allow predator populations to rebound and avoid extirpation from the ecosystem. We have shown that, over time, farmers who strictly maintain voles at low density thresholds would suppress predation services provided by vole predators and instigate pesticide dependence. In addition, small mammals like voles certainly have ecosystem functions. Our results also suggest that the presence of small mustelids in ecosystems is beneficial for biodiversity conservation (see above) and agriculture interests. Given the importance of vole cycles and their trophic interactions, it is desirable to maintain vole population fluctuations of sufficient amplitude to maintain ecosystem processes.
 
 \subsection{Managing rodents and ecosystems}
-
 
 Presently, in Franche-Comté, farmers relying on bromadiolone alone can only treat pre-emptively when voles are at low densities (FFR e) whereas those using alternative methods without pesticide are allowed to spread AR in low quantity up to intermediate vole densities (FFR d). Spreading AR in low quantity seems superficially desirable, but our heuristic model, assuming an idealised homogenous landscape, show this is associated with frequent treatments. Consequently, it would induce a near permanent availability of a small number of intoxicated voles which, combined with low availability of non-contaminated voles, would reduce predator populations. Therefore, the extreme situation of using a low vole density threshold (FFR e) at a large scale is undesirable because it depletes the prey resources of foxes and mustelids and their populations. Triggering treatment at intermediate vole density with a low amount of AR (FFR d) allowed for temporal refuges, i.e. longer periods free of rodenticide necessary for predator densities to rebound while simultaneously avoiding episodes with high vole density, as required by farm production interests. Under a landscape management approach, such temporal refuges could be spatial refuges, with parts of the landscape free of pesticides where predator populations can recover.
 
@@ -266,7 +296,7 @@ JF benefited from a Marie Skłodowska-Curie fellowship (European Commission, pro
 % TABLE 1: PARAMETERS DESCRIPTION
 
 \begin{table}
-\caption{Populations dynamics and toxicological parameters used in the model simulations. Notation ppm stands for parts-per-million [mg.kg$^{-1}$] and n.d denotes a dimensionless parameter. See description in Methods.}
+\caption{Populations dynamics and toxicological parameters used in the model simulations. Notation ppm stands for parts-per-million [mg kg$^{-1}$] and n.d. denotes a dimensionless parameter. See description in Methods.}
 \label{tab:parameterization}
 \begin{tabular}{l p{7cm} l p{3cm}}
 \hline
@@ -276,8 +306,8 @@ Parameters & Definitions & Units & Value\\
 \hline
 %------- Vole dynamic
 %
-$r_V$ & Maximal growth rate of voles & ind.day$^{-1}$ & $\ln(2\times600)/365$ \\
-$K_V$ & Carrying capacity of voles & ind.ha$^{-1}$ & $600$  \\
+$r_V$ & Maximal growth rate of voles & day$^{-1}$ & $\ln(2\times600)/365$ \\
+$K_V$ & Carrying capacity of voles & ind ha$^{-1}$ & $600$  \\
 %
 % --------- Functional responses
 %
@@ -289,13 +319,13 @@ $h_F$ &  Handling time of foxes on voles & day & $1/6$\\
 %
 % ------------ Mustelids dynamics
 %
-$\varepsilon_M$ & Conversion efficiency of ingested food & & $0.0025$ \\
+$\varepsilon_M$ & Conversion efficiency of ingested food & n.d. & $0.0025$ \\
 $m_M$ & Natural mortality rate of mustelids & day$^{-1}$ & $1/(0.8 \times 365)$\\
 %
 % --------------- Fox dynamic 
 %
-$r_F$ & Maximal growth rate of foxes & ind.day$^{-1}$ & $\ln(3)/365$ \\
-$K_F$ & Carrying capacity of foxes & ind.ha$^{-1}$ & $0.03$ \\
+$r_F$ & Maximal growth rate of foxes & day$^{-1}$ & $\ln(3)/365$ \\
+$K_F$ & Carrying capacity of foxes & ind ha$^{-1}$ & $0.03$ \\
 %
 % -------- Population biomasses
 %
@@ -309,13 +339,13 @@ $d$ & Degradation rate of dead vole & ind.day$^{-1}$ & $1/7$ \\
 \multicolumn{2}{l}{Toxicological parameters}  & & \\
 \hline
 %
-$T_{broma}(V)$ & Farmer input AR function of vole density & kg.ha$^{-1}$ & Scenarios \\
-$k_0$ & Persistence of AR in the field & day$^{-1}$ & $(0.106+0.057)/2$ \\
+$T_{broma}(V)$ & Farmer input AR function of vole density & mg ha$^{-1}$ day$^{-1}$ & Scenarios \\
+$k_0$ & Disappearance of AR in the field & day$^{-1}$ & $(0.106+0.057)/2$ \\
 %
 %
-$M_{in}$ & Maximal intake rate of vole & day$^{-1}$ & $6\times 1/5$ \\
+$M_{in}$ & Maximal intake rate of vole & ppm day$^{-1}$ & $6\times 1/5$ \\
 %
-$D_{in}$ & Half saturation intake rate of vole & & $100$\\
+$D_{in}$ & Half saturation intake rate of vole & ppm & $100$\\
 %
 $LD_{50,V}$ & Lethal Dose for 50\% of voles & ppm & $2$ \\
 $H_V$ & Hill's coefficient dose-response curve &  n.d. & $4$ \\
@@ -403,6 +433,22 @@ e (50,7.5) & 169 & 1267.5 & 0& 1 & 0.96 & 31.42 & <0.01 & 0.01 \\
 \end{figure}
 
 
+% GRAPHIC SENSITIVITY ANALYSIS
 
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=\linewidth]{img/sobol_heatMap.png}
+		\caption{First-order Sobol's sensitivity index (denoted $S_p$ for parameter $p$) providing the global sensitivity of cost functions to parameters of the model \citep{Sobol1993} for the model d (i.e., 7.5kg of AR at threshold density of 250 voles). Analysis is based on 4200 simulations. Values reflect the expected fractional reduction in the variance for each cost functions that would be achieved if a specific parameter is fixed. If $S_p = 1$, the sensitivity is not influenced by the parameter $p$.}
+		\label{fig:sobol_sensitivity}
+	\end{center}
+\end{figure}
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=\linewidth]{img/Sensitivity_pm10_2.png}
+		\caption{Minimal and maximal values of cost functions with variation of + and - 10\% of change for each parameter value with other parameter values fixed, as set in Table~\ref{tab:parameterization}. Definition of parameters are in Table~\ref{tab:parameterization} (dd$_X$ are experiment duration as defined by equation \ref{eq:muX}), and cost function are defined in Table~\ref{tab:results}. Column SSE stands for Sum of Square Error and is scaled in $[0,1]$.}
+		\label{fig:sensitivity}
+	\end{center}
+\end{figure}
 
 \end{document}
