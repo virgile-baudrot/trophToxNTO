@@ -9,8 +9,6 @@
 #' @export
 #'
 #'
-
-
 condition = function(Vole.Level,Broma.Level){
   root.event = function(Time, State, Pars){
     with(as.list(c(State, Pars)), { D.V = State[(4*n+1):(5*n)]
@@ -28,11 +26,14 @@ condition = function(Vole.Level,Broma.Level){
       D.Vd = State[(5*n+1):(6*n)]
       D.M = State[(6*n+1):(7*n)]
       D.F = State[(7*n+1):(8*n)]
+      Cing.V = State[(8*n+1):(9*n)]
+      Cing.M = State[(9*n+1):(10*n)]
+      Cing.F = State[(10*n+1):(11*n)]
 
       C.soil=(round((D.V - Vole.Level),5)==0)*Broma.Level #rep(Broma.Level,n) # ppm * kg
 
-      C.V=C.V ;  C.M=C.M ; C.F=C.F ;  D.V = D.V ;  D.Vd= D.Vd ;  D.M= D.M ;  D.F = D.F
-      return(c(C.soil,C.V,C.M,C.F,D.V,D.Vd,D.M,D.F))
+      C.V=C.V ;  C.M=C.M ; C.F=C.F ;  D.V = D.V ;  D.Vd= D.Vd ;  D.M= D.M ;  D.F = D.F ; Cing.V = Cing.V ; Cing.M = Cing.M ; Cing.F = Cing.F
+      return(c(C.soil,C.V,C.M,C.F,D.V,D.Vd,D.M,D.F,Cing.V, Cing.M,Cing.F))
     })
   }
 

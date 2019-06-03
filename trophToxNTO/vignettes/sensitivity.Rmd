@@ -771,7 +771,7 @@ ls_randSens <- mclapply(1:1e3, function(i){
     df_temp <- tab_sensitivity(model_output, ls_params_expand[[i]])
     return(df_temp)},
     error=function(e) NULL)
-}, mc.cores = 4)
+}, mc.cores = 8)
 
 df_randSens_Mixed <- dplyr::bind_rows(ls_randSens)
 save(df_randSens_Mixed, file = "df_randSens_Mixed.rda")
@@ -811,7 +811,7 @@ ls_randSens_Cross <- mclapply(1:3200, function(i){
     df_temp <- tab_sensitivity(model_output, ls_params_expandCross[[i]])
     return(df_temp)},
     error=function(e) NULL)
-}, mc.cores = 7)
+}, mc.cores = 8)
 
 # mat_randSens <- do.call("rbind", ls_randSens)
 df_randSens_Cross <- dplyr::bind_rows(ls_randSens_Cross)
@@ -825,10 +825,25 @@ save(df_randSens_Cross, file = "df_randSens_Cross.rda")
 ## global variance
 
 ```{r}
+library(trophToxNTO)
 library(dplyr)
 # 1. Compute global variance
-load(file = "data/df_randSens_Mixed.rda")
+#load(file = "data/df_randSens_Mixed.rda")
+load(file = "../simulation/df_randSens_Mixed_0_0.rda")
+load(file = "../simulation/df_randSens_Mixed_500_20.rda")
+load(file = "../simulation/df_randSens_Mixed_250_20.rda")
+load(file = "../simulation/df_randSens_Mixed_250_7-5.rda")
+load(file = "../simulation/df_randSens_Mixed_50_7-5.rda")
 
+# 2. Compute variance of group
+#load(file = "data/df_randSens_Cross.rda")
+load(file = "../simulation/df_randSens_Cross_0_0.rda")
+load(file = "../simulation/df_randSens_Cross_500_20.rda")
+load(file = "../simulation/df_randSens_Cross_250_20.rda")
+load(file = "../simulation/df_randSens_Cross_250_7-5.rda")
+load(file = "../simulation/df_randSens_Cross_50_7-5.rda")
+
+# 3. production
 globalVariance = df_randSens_Mixed %>% 
   summarise(varMean_V = var(Mean_V),
             varMean_M = var(Mean_M),
@@ -839,18 +854,6 @@ globalVariance = df_randSens_Mixed %>%
             varM_50natural = var(M_50natural, na.rm = T))
 globalVariance
 
-# 2. Compute variance of group
-load(file = "data/df_randSens_Cross.rda")
-
-crossVariance = df_randSens_Cross %>%
-  group_by(n_par) %>% 
-  summarise(varMean_V = var(Mean_V),
-            varMean_M = var(Mean_M),
-            varMean_F = var(Mean_F),
-            varV_inf50 = var(V_inf50),
-            varnrb_AR = var(nrb_AR),
-            varM_50AR = var(M_50AR, na.rm = T),
-            varM_50natural = var(M_50natural, na.rm = T))
 
 crossVariance_global = df_randSens_Cross %>%
   group_by(n_par) %>% 
@@ -869,42 +872,63 @@ crossVariance_global = df_randSens_Cross %>%
             varnrb_AR = var(meannrb_AR),
             varM_50AR = var(meanM_50AR, na.rm = T),
             varM_50natural = var(meanM_50natural, na.rm = T))
-  
+
+if(any(unique(df_randSens_Cross$n_par) != 1:32)){
+  stop("NOT ALL PARAMETERS")
+  # df_randSens_Cross[nrow(df_randSens_Cross)+1, "n_par"] <- 2
+} 
+
+crossVariance = df_randSens_Cross %>%
+  group_by(n_par) %>% 
+  summarise(varMean_V = var(Mean_V),
+            varMean_M = var(Mean_M),
+            varMean_F = var(Mean_F),
+            varV_inf50 = var(V_inf50),
+            varnrb_AR = var(nrb_AR),
+            varM_50AR = var(M_50AR, na.rm = T),
+            varM_50natural = var(M_50natural, na.rm = T))
+
+
 # 3. Compute Sobol index
 crossVariance_matrix = as.matrix(select(crossVariance, -n_par))
 sobolSensitivityIndex_matrix = matrix(ncol = ncol(crossVariance_matrix), nrow=nrow(crossVariance_matrix))
-for(i in 1:32){
+for(i in 1:nrow(crossVariance_matrix)){
   sobolSensitivityIndex_matrix[i,] = crossVariance_matrix[i,] / as.matrix(globalVariance)
 }
 sobolSensitivityIndex = as.data.frame(sobolSensitivityIndex_matrix)
 colnames(sobolSensitivityIndex) = colnames(crossVariance_matrix)
+
+
 sobolSensitivityIndex$parameter = c("r.V", "K.V", "a.M", "a.F", "h.M", "h.F", "m.M", "d", "a.FM", "r.F", "K.F", "e.M", "LD.50.V", "LD.50.M", "LD.50.F", "dd.V", "dd.M", "dd.F", "H.V", "H.M", "H.F", "B.V", "B.M", "B.F", "Min", "Din", "eta.M", "eta.F", "k.out.V", "k.out.M", "k.out.F", "k.0")
 
 levels(sobolSensitivityIndex$parameter) = factor(sobolSensitivityIndex$parameter, levels = c("r.V", "K.V", "a.M", "a.F", "h.M", "h.F", "m.M", "d", "a.FM", "r.F", "K.F", "e.M", "LD.50.V", "LD.50.M", "LD.50.F", "dd.V", "dd.M", "dd.F", "H.V", "H.M", "H.F", "B.V", "B.M", "B.F", "Min", "Din", "eta.M", "eta.F", "k.out.V", "k.out.M", "k.out.F", "k.0"))
 
+sobolSensitivityIndex$parameter = c("$r_V$", "$K_V$", "$a_M$", "$a_F$", "$h_M$", "$h_F$", "$m_M$", "$d$", "$a_{FM}$", "$r_F$", "$K_F$", "$\\varepsilon_M$", "$LD_{50,V}$", "$LD_{50,M}$", "$LD_{50,F}$", "$dd_V$", "$dd_M$", "$dd_F$", "$H_V$", "$H_M$", "$H_F$", "$B_V$", "$B_M$", "$B_F$", "$M_{in}$", "$D_{in}$", "$\\eta_M$", "$\\eta_F$", "$k_{out,V}$", "$k_{out,M}$", "$k_{out,F}", "$k_0$")
+
 # --- plot
 library(tidyr)
 df_sobolIndex  = as.data.frame(sobolSensitivityIndex) %>%
-  gather(measure, value, -parameter)
+  gather(measure, value, -parameter) %>%
+  filter(!is.na(value))
 
 library(ggplot2)
-ggplot() + theme_minimal() + 
+plt_sobolIndex <- ggplot() + theme_minimal() + 
   scale_y_discrete(limits=rev(unique(df_sobolIndex$parameter))) + 
-  scale_fill_gradient2(low = "white", mid = "red", high = "black",
+  scale_fill_gradient2(low = "white", mid = "black", high = "red",
                        midpoint=1,
-                       na.value = "grey") +
+                       na.value = "grey",
+                       name = "Sobol Index") +
   geom_tile(data = df_sobolIndex,
-            aes(x = measure, y = parameter, fill = value/max(value)))
-
+            aes(x = measure, y = parameter, fill = value))
+plt_sobolIndex
 # PICTURE: 680*430
-
-
-
+ggsave(filename = "../manuscript/img/plt_sobolIndex_??_??.png",
+       plot = plt_sobolIndex,
+       width = 8, height = 5)
 # --- 
 # sobolSensitivityIndex_global = crossVariance_global / globalVariance
 # sobolSensitivityIndex_global
 ```
-
 
 
 ```{r}
