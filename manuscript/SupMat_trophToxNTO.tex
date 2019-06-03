@@ -20,6 +20,10 @@
 % To rotate a table or a figure
 \usepackage{lscape}
 % MATHS
+% To manage cells in table
+\newcommand{\tabcell}[2][c]{%
+	\begin{tabular}[#1]{@{}l@{}}#2\end{tabular}}
+
 %% The amssymb package provides various useful mathematical symbols
 \usepackage{amssymb}
 \usepackage{amsmath}
@@ -57,7 +61,7 @@
 
 \begin{center}
 	\huge\textbf{
-	Supporting Information 1
+	Supporting Information
 	}\par
 \end{center}
 
@@ -72,11 +76,11 @@
 \begin{center}
 	\large\textbf{
 		Virgile Baudrot$^{1,2}$ 
-		Javier Fernandez-de-Simon$^1,3$
+		Javier Fernandez-de-Simon$^{1,3}$
 		Michael Coeurdassier$^1$,
-		Geoffroy Couval$^1,4$,
+		Geoffroy Couval$^{1,4}$,
 		Patrick Giraudoux$^1$,
-		Xavier Lambin$^5,6$		
+		Xavier Lambin$^{5,6}$		
 	}\par	
 \end{center}
 ~\\
@@ -89,7 +93,7 @@ $^5$ School of Biological Sciences, University of Aberdeen, Zoology Building, Ti
 $^*$ Corresponding authors: virgile.baudrot@posteo.net or x.lambin@abdn.ac.uk
 
 
-\newpage
+ \clearpage
 
 % -----------------------------
 
@@ -98,7 +102,7 @@ $^*$ Corresponding authors: virgile.baudrot@posteo.net or x.lambin@abdn.ac.uk
 
 % GRAPHIC SCHEME
 
-\begin{figure}
+\begin{figure}[!htb]
 	\begin{center}
 		\includegraphics[width=.8\linewidth]{img/system_scheme.png}
 		\caption{Dynamics of mustelids (bold grey line) and red foxes (bold black line) after 50 years of simulation (10 years of burn-in period, shaded area, and 40 years considered here for the compute of results, estimation of 
@@ -116,7 +120,7 @@ The population dynamics of a tri-trophic system is commonly described as follow:
 \begin{array}{l l}
 \dfrac{dV}{dt} & =  r_V V \left( 1- \dfrac{V}{K_V}\right) - \Phi_{V,M}(V)M - \Phi_{V,F}(V,M)F\\[.3cm]
 %
-\dfrac{dM}{dt} & = \varepsilon_M \Phi_{V,M}(V)M - m_M M - \Phi_{M,F}(V,M)F\\[.3cm]
+\dfrac{dM}{dt} & = \varepsilon_M B_V \Phi_{V,M}(V)M - m_M M - \Phi_{M,F}(V,M)F\\[.3cm]
 %
 \dfrac{dF}{dt} & = F r_F \left( 1- \dfrac{F}{K_F}\right)
 \end{array}
@@ -124,7 +128,9 @@ The population dynamics of a tri-trophic system is commonly described as follow:
 \label{eq:simpleSystem}
 \end{equation}
 
-As described in the manuscript, the vole population, $V$ followed a logistic growth rate, with $r_V$  the maximal reproduction rate, fixed at $r_V = \ln(2 \times 600)/365$ in [day$^{-1}$], since montane water vole populations can increase from 0  to  600 individuals ha$^{-1}$ or more in a year \citep{Giraudoux1997} resulting in the equilibrium density being fixed at $K_V = 600$ individuals. 
+As described in the manuscript, the vole population, $V$ followed a logistic growth rate, with $r_V$  the maximal reproduction rate, fixed at $r_V = \ln(2 \times 600)/365$ in [day$^{-1}$], since montane water vole populations can increase from 0  to  600 individuals ha$^{-1}$ or more in a year \citep{Giraudoux1997} resulting in the equilibrium density being fixed at $K_V = 600$ individuals.
+%
+Other variable and parameters are detailed hereafter.
 
 \subsubsection{About the logistic model}
 
@@ -175,11 +181,11 @@ The vole population was preyed upon by mustelid and fox populations, denoted $M$
 
 \begin{equation}
 \begin{array}{l l}
-\Phi_{V,M}(V)M = \dfrac{a_M V}{1 + h_M a_M V} \\[.3cm]
+\Phi_{V,M}(V) = \dfrac{a_M V}{1 + h_M a_M V} \\[.3cm]
 %
-\Phi_{V,F} = \dfrac{a_{VF} V}{a_{VF}V + a_{MF}F} \times \dfrac{(a_{VF}V + a_{MF} M)^2}{1 + h_F(a_{VF}V + a_{MF} M)^2}\\[.3cm]
+\Phi_{V,F}(V) = \dfrac{a_{VF} V}{a_{VF}V + a_{MF}F} \times \dfrac{(a_{VF}V + a_{MF} M)^2}{1 + h_F(a_{VF}V + a_{MF} M)^2}\\[.3cm]
 %
-\Phi_{M,F}(V,M)F = \dfrac{a_{MF}V}{a_{VF}V + a_{MF}F} \times \dfrac{(a_{VF}V + a_{MF}M)^2}{1+h_F(a_{VF}V + a_{MF}M)^2}
+\Phi_{M,F}(V,M) = \dfrac{a_{MF}V}{a_{VF}V + a_{MF}F} \times \dfrac{(a_{VF}V + a_{MF}M)^2}{1+h_F(a_{VF}V + a_{MF}M)^2}
 \end{array}
 \label{eq:functionResponse}
 \end{equation}
@@ -194,13 +200,13 @@ $\dfrac{dV}{dt}  =  r_V V \left( 1- \dfrac{V}{K_V}\right) - \Phi_{V,M}(V)M - \Ph
 
 \subsubsection{Conversion efficiency and mortality rate in mustelid population}
 
-The parameterization of the conversion efficiency of ingested food into new born, $\varepsilon_M$ in [n.d.] (non dimensional), and the mortality rate, $m_M$ in [day$^{-1}$], in equation \eqref{eq:simpleSystem} is not straightforward since we have to take into account the mortality rate due to starvation.
+The parameterization of the conversion efficiency of ingested food into new born, $\varepsilon_M B_V$ (the parameter $B_V$ is the constant mean biomass of one individual as we explain latter, but could be integrated into a general constant parameter since $B_V$ is a constant) in [n.d.] (non dimensional, so with $B_V$ in [kg], in this formulation $\varepsilon_M$ is in [kg$ {-1}$], which is a rate by kg), and the mortality rate, $m_M$ in [day$^{-1}$], in equation \eqref{eq:simpleSystem} is not straightforward since we have to take into account the mortality rate due to starvation.
 % 
 In the situation of no starvation, ageing, diseases and predation of mustelids are the main reason of death. In the situation of no prey availability at initial condition, then the mortality rate of mustelids should be equal to the mortality rate without food. 
 Using the simplest scheme of Dynamic Energy Budget (DEB) theory (seeFigure~\ref{fig:DEB_scheme}), the ingested food is assimilated for a part, we denote $\alpha$ and non-assimilated for another part, $(1- \alpha)$. Then, the assimilated part goes to a reserve (or directly use) in either the somatic maintenance or in the maturity maintenance (to produce reproductive tools). In DEB, a proportion $\kappa$ from the reserve is the part allocated to somatic maintenance [n.d.] and a proportion $1-\kappa$ is addressed to the maturity maintenance.
 
 
-\begin{figure}
+\begin{figure}[!htb]
 	\begin{center}
 		\includegraphics[width=.5\linewidth]{img/DEB_scheme.png}
 		\caption{Representation of the standard dynamic energy budget (DEB model \citep{Sousa2010}}
@@ -231,11 +237,17 @@ Which is equal to:
 \frac{dM}{dt} = \left(\alpha (1 - \kappa) \varepsilon' - \sigma \alpha \kappa  \right) \Phi_{V,M}(V)  M - m_{M, -\Phi}  M  - \Phi_{M,F}(V, M) F
 \end{equation}
 
-Therefore, if we set  the food-independent mortality rate $m_M = m_{M, -\Phi}$ and the conversion efficiency of ingested food $\varepsilon_M=\alpha ((1 - \kappa) \varepsilon' - \sigma  \kappa ) $ , we get back to the equation provided in model \eqref{eq:simpleSystem} but with a clearer definition of $\varepsilon_M$.
+Therefore, if we set  the food-independent mortality rate $m_M = m_{M, -\Phi}$ and the conversion efficiency of ingested food $\varepsilon_M B_V=\alpha ((1 - \kappa) \varepsilon' - \sigma  \kappa ) $ , we get back to the equation provided in model \eqref{eq:simpleSystem} but with a clearer definition of $\varepsilon_M B_V$.
 
-This is why we parameterized $m_M$ in [day$^{-1}$] as the inverse of life expectancy in [day$^{-1}$], and $\varepsilon_M$ in [n.d.] as an unclear parameter derived from the null model (i.e., without AR) to reflect observed population dynamics. 
+This is why we parameterized $m_M$ in [day$^{-1}$] as the inverse of life expectancy in [day$^{-1}$], and $\varepsilon_M B_V$ in [n.d.] as an unclear parameter derived from the null model (i.e., without AR) to reflect observed population dynamics. 
 
-In any case, the dimension of the equation $\dfrac{dM}{dt}  = \varepsilon_M \Phi_{V,M}(V)M - m_M M - \Phi_{M,F}(V,M)F$ is well defined, since $\varepsilon_M \Phi_{V,M}(V)$ is in [day$^{-1}$].
+In any case, the dimension of the equation
+\begin{equation}
+\dfrac{dM}{dt}  = \varepsilon_M B_V \Phi_{V,M}(V)M - m_M M - \Phi_{M,F}(V,M)F
+\label{eq:dynamic_M}
+\end{equation}
+%
+is well defined, since $\varepsilon_M B_V \Phi_{V,M}(V)$ is in [day$^{-1}$].
 
 \subsection{Dynamic of populations with AR}
 
@@ -251,9 +263,9 @@ To consider both toxicological and population dynamics within the same equation,
 
 We denote $V$, $V_d$ $M$, $F$ the densities of voles, dead voles, mustelids and foxes respectively ; $B_V$, $B_{V_d}$, $B_M$ and $B_F$ the mean biomass of an individual of those species in [g ind$^{-1}$], and $B_{T,V}$, $B_{T,V_d}$, $B_{T,M}$ and $B_{T,F}$ the total biomass of the population in the space unit we used, so in [g ha$^{-1}$]. In other words, $B_{T,X} = B_X \times X$. The notation $C_V$, $C_{V_d}$ $C_M$ and $C_F$ holds for the mean concentration of the contaminant in one individual, commonly called the body burden of the prey in ppm [mg kg$^{-1}$].
 %
-The growth function of the prey population is a function $g_X(X, C_X)$ in [day$^{-1}$] depending on the population density $X$ and the concentration of the contaminant $C_X$.
+The growth function of the prey population is a function $g_X(X, \zeta_X)$ in [day$^{-1}$] depending on the population density $X$ and the dose of the contaminant $\zeta_X$, either the internal concentration $C_X$ or the dose eaten $D_X$.
 %
-The dose-response curve $\mu_X(C_X)$ is defined by a log-normal cumulative distribution function as in \cite{Loos2010}.
+The dose-response curve $\mu_X(\zeta_X)$ is defined by a log-normal cumulative distribution function as in \cite{Loos2010}.
 
 
 \paragraph{Variables for the population dynamics}
@@ -265,24 +277,6 @@ To convert individual dynamics into biomass dynamics, we just multiplied the var
 \label{eq:biomTOpop}
 \end{equation}
 %
-
-\paragraph{Variable for the toxicant dynamics}
-%
-For the dynamic of toxicants, we consider an homogeneous population.
-
-We set a new variable $w_X = C_X B_X X$ which is in [$\mu$g g$^{-1}$] $\times$ [g ind$^{-1}$] $\times$ [ind ha$^{-1}$], so that:
-%
-$w_X$ is in [mg ha$^{-1}$] or [mg population$^{-1}$], which is the quantity of contaminant within the population.
-
-The dynamic of the new variable is defined with:
-%
-\begin{equation}
-w_X = C_X B_X X = C_X B_{T,X} \quad \Rightarrow \quad \frac{dw_X}{dt} = B_X \frac{dX C_X}{dt} = B_X \left( X \frac{dC_X}{dt} + C_X \frac{dX}{dt} \right)
-\end{equation}
-%
-
-As a consequence, $\dfrac{dw_X}{dt}$ is in [mg ha$^{-1}$ day$^{-1}$].
-
 
 \subsubsection{Dynamic of the contaminant in the environment}
 
@@ -317,125 +311,439 @@ This rate $\kappa(w_{ext})$ was assumed to be an increasing function characteriz
 So the dimension of the ingestion rate $\kappa(w_{ext})$ is the same as $M_{in}$ that is [mg kg$^{-1}$ day$^{-1}$].
 
 
+\subsubsection{The dose in dose-response}
+
+The dose of the dose-response function can be either based on the exposure in the environment, the food ingested or the internal concentration. While data used in this paper are considering internal concentration for voles, this is the ingested concentration used for mustelids and predators.
+
+For the dynamic of dose, we consider an homogeneous population, where the dose eaten, or the internal concentration are equal to all individuals within a population. We denote $\zeta_X$ such a dose.
+
+\paragraph{Dynamic of the dose eaten: $\zeta_X$}
+%
+Since predators are only exposed to the contaminant through the functional response, we introduce $D_{V,M}$, $D_{V,F}$ and $D_{M,F}$  which are respectively the doses of contaminant include in food of individuals in [$\mu$g g$^{-1}$ day$^{-1}$ ind$^{-1}$].
+%
+For simplification of writing, we write $D_M = D_{V,M}$ and $D_F = D_{V,F}+D_{M,F}$
+%
+Since $D_X$ it is by kg of the predator $X$, we have to take into account variation of the biomass of this predator already defined by $B_{T,X}$. Therefore we first define the total amount of contaminant eaten by mustelids $w_{exp,M}$ in [mg pop$_M^{-1}$ or mg ha$^{-1}$] and derive the dose.
+%
+\begin{equation}
+w_{exp,X} = D_X B_X X = D_X B_{T,X} \quad \Rightarrow \quad \frac{dw_{exp,X}}{dt} = B_X \frac{dX D_X}{dt} = B_X \left( X \frac{dD_X}{dt} + D_X \frac{dX}{dt} \right)
+\end{equation}
+%
+Therefore, $\dfrac{dw_{exp,X}}{dt}$ is in [mg pop$^{-1}$ day$^{-1}$] or, since we consider a close population within one ha, it is in  [mg ha$^{-1}$ day$^{-1}$].
+
+Also:
+%
+\begin{equation}
+\frac{dD_X}{dt} = \frac{dw_{exp,X}/B_{T,X}}{dt} = \dfrac{1}{B^2_{T,X}} \left( B_{T,X} \frac{dw_{exp,X}}{dt} + w_{exp,X} \frac{dB_{T,X}}{dt} \right)
+\end{equation}
+%
+
+\paragraph{Dynamic of the internal concentration}
+%
+As for the dose provided, we set a new variable $w_X = C_X B_X X$ which is in [$\mu$g g$^{-1}$] $\times$ [g ind$^{-1}$] $\times$ [ind ha$^{-1}$], so that:
+%
+$w_X$ is in [mg ha$^{-1}$] or [mg population$^{-1}$], which is the quantity of contaminant within the population.
+%
+The dynamic of the new variable is defined with:
+%
+\begin{equation}
+w_X = C_X B_X X = C_X B_{T,X} \quad \Rightarrow \quad \frac{dw_X}{dt} = B_X \frac{dX C_X}{dt} = B_X \left( X \frac{dC_X}{dt} + C_X \frac{dX}{dt} \right)
+\end{equation}
+%
+and $\dfrac{dw_X}{dt}$ is in [mg ha$^{-1}$ day$^{-1}$].
+%
+
+
+
 \subsubsection{Dynamics of contaminant within populations}
 
-With the previous assumption, the general model is described as follow:
-
-\paragraph{Population dynamics}
-
-From the equation \eqref{eq:biomTOpop}, we have: $\dfrac{d B_{T,X}}{dt} = B_X \dfrac{d X}{dt}$
-
-\paragraph{Conversion of $w_V$ into $C_V$}
-
-\begin{equation}
-\begin{array}{c l}
-\dfrac{d C_V}{dt} & = \dfrac{d w_V / B_{T,V}}{dt} = \dfrac{1}{B_{T,V}^2} \left( \dfrac{d w_V}{dt} B_{T,V} - w_V \dfrac{d B_{T,V}}{dt}\right) \\[3mm]
+With all the assumptions made in the manuscript, especially the assumption that individuals of a same population have the same biomass and the same amount of contaminant in their bodies, the model for the transfer of a contaminant  is given by:
 %
-& \\[3mm]
-\end{array}
-\end{equation}
 
+\begin{subequations}
+	\begin{empheq}[left={\empheqlbrace\,}]{align}
+	% OUTSIDE toxic
+	\dfrac{dw_{ext}}{dt} & =  T_{Broma}(V) - k_0w_{ext} - \kappa(w_{ext})B_{T,V} 
+	\label{eq:General_Mod:a} \\[3mm]
+	% VOLE Dynamic
+	\dfrac{dB_{T,V}}{dt} & = 
+	B_{T,V} r_V\left( 1- \dfrac{V}{K_V} \right)	- \mu_V(\zeta_V)B_{T,V} -  B_V (\Phi_{V,M}(V) M - \Phi_{V,F}(V,M) F)
+	\label{eq:General_Mod:b} \\[3mm]
+	% VOLE toxic
+	\dfrac{dw_{V}}{dt} & = \kappa(w_{ext}) B_{T,V} - w_V(k_{out, V} + \mu(\zeta_V)) - \notag\\[3mm]
+	&  C_V B_V ( \Phi_{V,M}(V)M + \Phi_{V,F}(V,M)F )
+	\label{eq:General_Mod:c} \\[3mm]
+	%
+	% MUSTELID dynamic
+	\dfrac{dB_{T,M}}{dt} & = 
+	B_{T,M} (\varepsilon_MB_V  \Phi_{V,M}(V) - m_M - \mu_M(\zeta_M) ) - B_M \Phi_{M,F}(V, M) F
+	\label{eq:General_Mod:d} \\[3mm]
+	% MUSTELID toxic
+	\dfrac{dw_{M}}{dt} & =  - k_{out, M} w_M - w_M (m_M + \mu_M(\zeta_M))  - C_M B_M \Phi_{M,F}(V,M)F   + \notag \\[3mm]
+	&  \eta_M C_V B_V \Phi_{V,M}(V)M 
+	\label{eq:General_Mod:e} \\[3mm]
+	%
+	% FOX dynamic
+	\dfrac{dB_{T,F}}{dt} & = 
+	B_{T,F} r_F\left( 1- \dfrac{F}{K_F} \right)	- \mu_F(\zeta_F) B_{T,F}
+	\label{eq:General_Mod:f}  \\[3mm]
+	% FOX toxic
+	\dfrac{dw_{F}}{dt} & =  - k_{out, F} w_F - w_F \mu_F(\zeta_F) + \notag \\[3mm]
+	& \eta_F \left( C_V B_V \Phi_{V,F}(V,M) F +  C_M B_M \Phi_{M,F}(V,M) F\right)  
+	\label{eq:General_Mod:g}
+	\end{empheq}
+	\label{eq:General_Mod}
+\end{subequations}
+
+In the general model \eqref{eq:General_Mod}, the equations \eqref{eq:General_Mod:b}, \eqref{eq:General_Mod:d} and \eqref{eq:General_Mod:f} present the dynamic of the total biomass of voles, mustelids and foxes respectively.
+%
+The equations \eqref{eq:General_Mod:a}, \eqref{eq:General_Mod:c}, \eqref{eq:General_Mod:e} and \eqref{eq:General_Mod:g} stand for the dynamics of contaminant concentrations in the environment and within individuals for respectively the voles, mustelids and foxes. The parameter $k_{out,X}$ is the excretion rate of the contaminant and the death of individuals implies a decrease of amounts of the contaminant, respectively $ -w_X m_X$ and $-w_X \mu_X(\zeta_X)$ with $\zeta_X$ being either the internal concentration $C_X$ or the dose eaten $D_X$. For predators, data provide a dose-response mortality function resulting from a the ingestion dose and not the internal concentration.
+%
+The transfer of the contaminant through the predation is express by the term $ C_X B_X \Phi(X)Y$, which is removed in prey contaminant dynamic $w_X$ and added in the predator contaminant dynamic $w_Y$ (with a factor of transfer efficiency $\eta_Y$).
+%
+
+
+While we could consider the population dynamic in term of biomasses, it is more convenient to use density of population as suggested by the change of variables which are as follows:
+
+\paragraph{Internal concentration}~\\
+
+\begin{enumerate}
+	\item Conversion of the dynamics of biomass of population, $B_{T,X}$ into dynamics of the density, $X$. From the equation \eqref{eq:biomTOpop}, we have: $\dfrac{d B_{T,X}}{dt} = B_X \dfrac{d X}{dt}$
+	\item Conversion of amount of contaminant, $w_X$, into within population concentration, $C_X$:	
+	$$\dfrac{d C_X}{dt}  = \dfrac{d w_X / B_{T,X}}{dt} = \dfrac{1}{B_{T,X}^2} \left( \dfrac{d w_X}{dt} B_{T,X} - w_X \dfrac{d B_{T,X}}{dt}\right)$$
+\end{enumerate}
+
+Using these properties, we can convert part of system \eqref{eq:General_Mod}:
 
 
 \begin{equation}
 \left\lbrace
-\begin{array}{c l}
-% OUTSIDE toxic
-\dfrac{dw_{ext}}{dt} & = T_{Broma}(V) - k_0w_{ext} - \kappa(w_{ext})B_{T,V} \\[3mm]
-% VOLE Dynamic
-\dfrac{dB_{T,V}}{dt} & =
-B_{T,V} g_V(V, C_V)	- \mu_V(C_V)B_{T,V} - B_V \Phi_{V,M}(V) M - B_V \Phi_{V,F}(V,M) F\\[3mm]
-% VOLE toxic
-\dfrac{dw_{V}}{dt} & = \kappa(w_{ext}) B_{T,V} - k_{out, V} w_V - w_V \mu(C_V) - C_V B_V \Phi_{V,M}(V)M + \gamma_V w_V g_V(V, C_V)\\[3mm]
+\begin{array}{c c l}
+\dfrac{dC_V}{dt} & = & \dfrac{d w_V / B_{T,V}}{dt} = \dfrac{1}{B_{T,V}^2} \left( \dfrac{d w_V}{dt} B_{T,V} - w_V\dfrac{d B_{T,V}}{d t}\right) \\[3mm]
 %
-% DEAD VOLE Dynamic
-\dfrac{dB_{T,V_d}}{dt} & = \mu_V(C_V)B_{T,V}\\[3mm]
-% DEAD VOLE toxic
-\dfrac{dw_{V_d}}{dt} & = \dfrac{dw_{V}}{dt}\\[3mm]
+& = & \dfrac{1}{B_{T,V}} \left(\kappa(w_{ext})B_{T,V} - k_{out,V}w_V - w_V \mu_V(C_V) - C_V B_V(\Phi_{V,M}(V)M + \Phi_{V,F}(V,M)F ) \right) - \\[3mm]
+& & \dfrac{w_V}{B_{T,V}^2} \left( B_{T,V} g_V{V,C_V} - \mu_V(C_V) B_{T,V} - B_V(\Phi_{V,M}(V)M + \Phi_{V,F}(V,M)F \right)  \\[3mm]
 %
-% MUSTELID dynamic
-\dfrac{dB_{T,M}}{dt} & =
-B_{T,M} (\varepsilon_MB_V  \Phi_{V,M}(V)M - m_M - \mu_M(C_M) ) - B_M \Phi_{M,F}(V, M) F\\[3mm]
-% MUSTELID toxic
-\dfrac{dw_{M}}{dt} & = - k_{out, M} w_M - w_M (m_M + \mu(C_M)) + \eta_M C_M B_M \Phi_{V,M}(V)M - \\[3mm]
-& C_M B_M \Phi_{M,F}(V,M)F + \gamma_M w_M g_M(M, C_V)\\[3mm]
-%
-% FOX dynamic
-\dfrac{dB_{T,F}}{dt} & =
-B_{T,F} g_F(F, C_F)	- \mu_F(C_F) \\[3mm]
-% FOX toxic
-\dfrac{dw_{F}}{dt} & = - k_{out, F} w_F - w_F \mu(C_F) + \eta_F C_M B_M \Phi_{M,V} F  + \eta_F C_V B_V \Phi_{V,V} F + \gamma_F w_F g_F(F, C_F)\\[3mm]
+& = & \kappa(w_{ext}) - C_V \left( k_{out,V} + r_V\left( 1- \dfrac{V}{K_V} \right)\right)
 \end{array}
 \right.
 \end{equation}
 
 
 %
-
-Thus, it is straightforward to express the dynamics as:
+\begin{equation}
+\left\lbrace
+\begin{array}{c c l}
+\dfrac{dC_M}{dt} & = & \dfrac{d w_M / B_{T,M}}{dt} = \dfrac{1}{B_{T,M}^2} \left( \frac{d w_M}{d t} B_{T,M} - w_M \frac{dB_{T,M}}{dt} \right)\\[3mm]
+%
+& = & \dfrac{B_{T,M}}{B_{T,M}^2} \left[ - k_{out,M} w_M - w_M(m_M + \mu_M(D_M)) + \eta_M C_V B_V \Phi_{V,M}(V)  - C_M B_M \Phi_{M,F}(V,M)F \right] - \\[3mm]
+& &\dfrac{w_M}{B_{T,M}^2]} \left[ B_{T,M} (\varepsilon_M B_V \Phi_{V,M}(V) - m_M - \mu_M(D_M) ) - B_M \Phi_{M,F}(V,M)F  \right]\\[3mm]
+%
+& = &\dfrac{1}{B_{T,M}} \left[ C_M B_{T,M} (- k_{out,M} - m_M - \mu_M(D_M)- \Phi_{M,F}(V,M)F) + \eta_M C_V B_V \Phi_{V,M}(V)M  \right]  -  \\[3mm]
+&  & C_M(\varepsilon_M B_V \Phi_{V,M}(V) - m_M - \mu_M(D_M)) + \frac{B_M}{B_{T,M}} C_M \Phi_{M,F}(V,M)F\\[3mm]
+%
+& = & C_M(-k_{out,M} - m_M - \mu_M(D_M)) + \dfrac{1}{B_{T,M}} \eta_M C_V B_V \Phi_{V,M}(V)M - \Phi_{M,F}(V,M)F - \\[3mm]
+&  & C_M \varepsilon_M B_V \Phi_{V,M}(V) + C_M(m_M + \mu_M(D_M) + \Phi_{M,F}(F)F \\[3mm]
+%
+& = & \eta_M C_V \dfrac{B_V}{B_M} \Phi_{V,M}(V) - C_M \left( k_{out,M} + \varepsilon_M B_V \Phi_{V,M}(V)\right)
+\end{array}
+\right.
+\end{equation}
 
 
 \begin{equation}
 \left\lbrace
-\begin{array}{c l}
+\begin{array}{c c l}
+\dfrac{d C_F}{dt} & = & \dfrac{d w_F / B_{T,F}}{dt} = \dfrac{1}{B_{T,F}^2} \left( \dfrac{d w_F}{dt} B_{T,F} - w_F \dfrac{d B_{T;F}}{dt}\right) \\[3mm]
+%
+& = & \dfrac{1}{B_{T,F}} \left( - k_{out,F}w_F - w_F \mu_F(D_F) + \eta_F(C_M B_M \Phi_{M,F}(V,M)F + C_V B_V \Phi_{V,F}(V,M)F) \right) - \\[3mm] 
+& & \dfrac{w_F}{B_{T,F}^2} \left( B_{T,F} r_F\left( 1- \dfrac{F}{K_F} \right) - B_{T,F} \mu_F(D_F) \right) \\[3mm]
+%
+& = & \eta_F \left( C_V \dfrac{B_V}{B_F} \Phi_{V,F}(V,M) + C_M \dfrac{B_M}{B_F} \Phi_{M,F}(V,M)  \right) - C_F \left( k_{out,F} + r_F\left( 1 - \dfrac{F}{K_F} \right)\right) 
+\end{array}
+\right.
+\end{equation}
+
+
+%
+In addition, for dead voles, we assume the following dynamics:
+
+\begin{equation}
+\dfrac{dB_{T,V_d}}{dt}  = \mu_V(C_V)B_{T,V}
+\end{equation}
+
+and
+
+\begin{equation}
+\dfrac{dw_{V_d}}{dt}  = \dfrac{dw_{V}}{dt}
+\end{equation}
+%
+
+
+\paragraph{Dose ingested}~\\
+As for internal concentration, we first define the total amount of contaminant eaten by population $X$ $w_{exp,X}$ in [mg pop$_X^{-1}$ day$^{-1}$ or mg ha$^{-1}$ day$^{-1}$] and derive the dose as:
+
+\begin{equation}
+\left\lbrace
+\begin{array}{c  l}
+\dfrac{dD_M}{dt} & =  \dfrac{d w_{exp,M} / B_{T,M}}{dt} = \dfrac{1}{B_{T,M}^2} \left(\dfrac{d w_{exp,M}}{dt} B_{T,M} - \dfrac{d B_{T,M}}{dt} w_{exp,M}\right)
+\\[3mm]
+%
+& =  \dfrac{1}{B_{T,M}} C_V B_V \Phi_{V,M}(V)M - \\[3mm]
+& \dfrac{D_M B_{T,M}}{B_{T,M}^2} \left( 	B_{T,M} (\varepsilon_MB_V  \Phi_{V,M}(V) - m_M - \mu_M(D_M) ) - B_M \Phi_{M,F}(V, M) F \right)	\\[3mm]
+& =  \dfrac{C_V B_V \Phi_{V,M}(V)}{B_M} - D_M	(\varepsilon_MB_V  \Phi_{V,M}(V) - m_M - \mu_M(D_M) ) + \dfrac{D_M \Phi_{M,F}(V, M) F}{M}  	
+\end{array}
+\right.
+\end{equation}
+
+
+And, with the same approach for foxes:
+
+\begin{equation}
+\left\lbrace
+\begin{array}{c  l}
+\dfrac{dD_F}{dt} & =  \dfrac{d w_{exp,F} / B_{T,F}}{dt} = \dfrac{1}{B_{T,F}^2} \left(\dfrac{d w_{exp,F}}{dt} B_{T,F} - \dfrac{d B_{T,F}}{dt} w_{exp,F}\right)
+\\[3mm]
+%
+& =  \dfrac{1}{F B_F} (C_V B_V \Phi_{V,F}(V,M)F + C_M B_M \Phi_{M,F}(V,M)F ) - \\[3mm]
+& \dfrac{D_F }{B_{T,F}} \left( 	B_{T,F} r_F\left( 1- \dfrac{F}{K_F} \right)	- \mu_F(D_F) B_{T,F}\right)	\\[3mm]
+& =  \dfrac{C_V B_V \Phi_{V,F}(V,M) + C_M B_M \Phi_{M,F}(V,M)}{B_F} -  D_F \left(r_F \left( 1- \dfrac{F}{K_F} \right)	- \mu_F(D_F)  \right)	
+\end{array}
+\right.
+\end{equation}
+
+\paragraph{General model}~\\
+
+As a consequence of all these assumptions, the model as implemented for simulations is given by:
+
+\begin{equation}
+\left\lbrace
+\begin{array}{c c l}
 % VOLE Dynamic
-\dfrac{dV}{dt} & =
-\overbrace{	r_V V (1-V/K_V)		}^{\text{growth rate}} -
+\dfrac{dV}{dt} & = &
+\overbrace{	r_V V \left( 1- \dfrac{V}{K_V} \right)		}^{\text{growth rate}} -
 \overbrace{	\mu_V(C_V)V	}^{\text{poisoning}} -
 \overbrace{	\Phi_{V,M}(V,V_d)M - \Phi_{V,F}(V,V_d,M)F	}^{\text{predation}}\\[3mm]
 %
 % DEAD VOLE Dynamic
-\dfrac{dV_d}{dt} & =
+\dfrac{dV_d}{dt} & = &
 \overbrace{ \mu_V(C_V)V }^{\text{new dead voles}} -
 \overbrace{	\Phi_{V_d,M}(V,V_d)M - \Phi_{V_d,F}(V,V_d,M)F	}^{\text{predation}}-
 \overbrace{d V_d}^{\text{degradation}}
 \\[3mm]
 %
 % MUSTELIDS Dynamic
-\dfrac{dM}{dt} & =
-\overbrace{	(\varepsilon_M\Theta_M(V,V_d)-m_M) M	}^{\text{growth rate}} - 
-\overbrace{\mu_M(C_M)M	}^{\text{poisoning}} -
+\dfrac{dM}{dt} & = &
+\overbrace{	(\varepsilon_M B_V \Theta_M(V,V_d)-m_M) M	}^{\text{growth rate}} - 
+\overbrace{\mu_M(D_M)M	}^{\text{poisoning}} -
 \overbrace{\Phi_{M,F}(V,V_d,M)F }^{\text{predation}} \\[3mm]
 %
 % F0X Dynamic
-\dfrac{dF}{dt} & =
+\dfrac{dF}{dt} & = &
 \overbrace{	r_F F (1-F/K_F)	}^{\text{growth rate}} -
-\overbrace{\mu_F(C_F)F	}^{\text{poisoning}}  \\
+\overbrace{\mu_F(D_F)F	}^{\text{poisoning}}  \\
 %
 %
 % Toxicological dynamics
-\dfrac{dC}{d t}  & = 
+\dfrac{dw_{ext}}{d t}  & = & 
 \overbrace{T_{Broma}(V)}^{\text{treatment}} - 
-\overbrace{k_0 C}^{\text{degradation}} -
-\overbrace{\kappa(C)}^{\text{consumption}} \\[3mm]
+\overbrace{k_0 w_{ext}}^{\text{degradation}} -
+\overbrace{\kappa(w_{ext}) V}^{\text{consumption}} \\[3mm]
 %
 % Toxico-kinetics in Voles
-\dfrac{dC_V}{dt} &= 
+\dfrac{dC_V}{dt} & = &
 \overbrace{\kappa(C)}^{\text{intake}} - 
 \overbrace{C_V\left(k_{out,V} + r_V \left(1 - \dfrac{V}{K_V}\right)\right)}^{\text{excretion}}\\[3mm]
 %
 % Toxico-kinetics in Mustelids
-\dfrac{dC_M}{d t} & =
+\dfrac{dC_M}{d t} & = &
 \overbrace{\eta_M \dfrac{B_V}{B_M} (\Phi_{V,M}(V,V_d,M)+\Phi_{V_d,M}(V,V_d,M)) C_V}^{\text{intake}} -
-\overbrace{C_M\left(k_{out,M} + \varepsilon_M \Phi_{V,M}(V,V_d,M) \right)}^{\text{excretion}} \\[3mm]
+\overbrace{C_M\left(k_{out,M} + \varepsilon_M B_V \Phi_{V,M}(V,V_d,M) \right)}^{\text{excretion}} \\[3mm]
+%
+\dfrac{dD_M}{d t} & = &
+\overbrace{
+\dfrac{ B_V }{B_M}C_V\Phi_{V,M}(V)}^{\text{exposure}}
+\overbrace{ - D_M \left(\varepsilon_MB_V  \Phi_{V,M}(V)
+ - m_M - \mu_M(D_M) -\Phi_{M,F}(V, M) \dfrac{F}{M} \right)}^{\text{population change}}   \\[3mm]
 %
 % Toxico-kinetics in Foxes
-\dfrac{dC_F}{d t} &=
-\overbrace{ \eta_F \dfrac{B_V}{B_F} \left( (\Phi_{V,M}(V,V_d,M)+\Phi_{V_d,M}(V,V_d,M)) C_V + \Phi_{M,F}(V,V_d,M) C_M \right)}^{\text{intake}} - \\[3mm]
-&
-\overbrace{k_{out,F} + r_F \left(1 - \dfrac{F}{K_F}\right) }^{\text{excretion}} 
+\dfrac{dC_F}{d t} & = &
+\overbrace{ \eta_F  \left( \dfrac{B_V}{B_F} (\Phi_{V,M}(V,V_d,M)+\Phi_{V_d,M}(V,V_d,M)) C_V + \dfrac{B_M}{B_F}\Phi_{M,F}(V,V_d,M) C_M \right)}^{\text{intake}} - \\[3mm]
+& &
+\overbrace{C_F \left( k_{out,F} + r_F \left(1 - \dfrac{F}{K_F}\right) \right) }^{\text{excretion}}  \\[3mm]
+\dfrac{dD_F}{d t} & = &
+\overbrace{
+ \dfrac{C_V B_V \Phi_{V,F}(V,M) + C_M B_M \Phi_{M,F}(V,M)}{B_F} }^{\text{exposure}} 
+\overbrace{ - D_F \left(r_F \left( 1- \dfrac{F}{K_F} \right)	- \mu_F(D_F)  \right)	}^{\text{population change}}
 \end{array}
 \right.
 \label{eq:Sys_complet}
 \end{equation}
 
+ \clearpage
+
+\section{Additional results of simulations}
+
+\subsection{Results with Foxes}
+
+\begin{figure}[!htb]
+	\begin{center}
+		\includegraphics[width=\linewidth]{img/graph_0_0.png}
+		\caption{Variation of population densities and contaminant concentration in soil simulated over 50 years. Scenario \textbf{a}: 0 AR. Variables are: $D.F$ for fox density, $D.M$ for mustelid density, $D.V$ for vole density, $D.Vd$ for dead vole density and $C.soil$ for AR concentration in the environment.}
+	\end{center}
+\end{figure}
+
+\begin{figure}[!htb]
+	\begin{center}
+		\includegraphics[width=\linewidth]{img/graph_500_20.png}
+		\caption{Variation of population densities and contaminant concentration in soil simulated over 50 years. Scenario \textbf{b}: threshold 500 in ha$^{-1}$ and 20 kg ha$^-1$ of AR.  Variables are: $D.F$ for fox density, $D.M$ for mustelid density, $D.V$ for vole density, $D.Vd$ for dead vole density and $C.soil$ for AR concentration in the environment.}
+	\end{center}
+\end{figure}
+
+\begin{figure}[!htb]
+	\begin{center}
+		\includegraphics[width=\linewidth]{img/graph_250_20.png}
+		\caption{Variation of population densities and contaminant concentration in soil simulated over 50 years. Scenario \textbf{c}: threshold 250 in ha$^{-1}$ and 20 kg ha$^-1$ of AR. Variables are: $D.F$ for fox density, $D.M$ for mustelid density, $D.V$ for vole density, $D.Vd$ for dead vole density and $C.soil$ for AR concentration in the environment.}
+	\end{center}
+\end{figure}
+
+\begin{figure}[!htb]
+	\begin{center}
+		\includegraphics[width=\linewidth]{img/graph_250_7_5.png}
+		\caption{Variation of population densities and contaminant concentration in soil simulated over 50 years. Scenario \textbf{d}: threshold 250 in ha$^{-1}$ and 7.5 kg ha$^-1$ of AR. Variables are: $D.F$ for fox density, $D.M$ for mustelid density, $D.V$ for vole density, $D.Vd$ for dead vole density and $C.soil$ for AR concentration in the environment.}
+	\end{center}
+\end{figure}
+
+\begin{figure}[!htb]
+	\begin{center}
+		\includegraphics[width=\linewidth]{img/graph_50_7_5.png}
+		\caption{Variation of population densities and contaminant concentration in soil simulated over 50 years. Scenario \textbf{e}: threshold 50 in ha$^{-1}$ and 7.5 kg ha$^-1$ of AR. Variables are: $D.F$ for fox density, $D.M$ for mustelid density, $D.V$ for vole density, $D.Vd$ for dead vole density and $C.soil$ for AR concentration in the environment.}
+	\end{center}
+\end{figure}
+
+\begin{figure}[!htb]
+	\begin{center}
+		\includegraphics[width=\linewidth]{img/plt_sobolIndex_0_0.png}
+		\caption{First-order Sobol's sensitivity index. Scenario \textbf{a}: No AR.}
+	\end{center}
+\end{figure}
+
+
+\begin{figure}[!htb]
+	\begin{center}
+		\includegraphics[width=\linewidth]{img/plt_sobolIndex_500_20.png}
+		\caption{First-order Sobol's sensitivity index. Scenario \textbf{b}: threshold 500 voles in ha$^{-1}$ and 20 kg ha$^-1$ of AR.}
+	\end{center}
+\end{figure}
+
+
+\begin{figure}[!htb]
+	\begin{center}
+		\includegraphics[width=\linewidth]{img/plt_sobolIndex_250_20.png}
+		\caption{First-order Sobol's sensitivity index. Scenario \textbf{c}: threshold 250 voles in ha$^{-1}$ and 20 kg ha$^-1$ of AR.}
+	\end{center}
+\end{figure}
+
+
+\begin{figure}[!htb]
+	\begin{center}
+		\includegraphics[width=\linewidth]{img/plt_sobolIndex_250_7_5.png}
+		\caption{First-order Sobol's sensitivity index. Scenario \textbf{d}: threshold 250 voles in ha$^{-1}$ and 7.5 kg ha$^-1$ of AR.}
+	\end{center}
+\end{figure}
+
+
+\begin{figure}[!htb]
+	\begin{center}
+		\includegraphics[width=\linewidth]{img/plt_sobolIndex_50_7_5.png}
+		\caption{First-order Sobol's sensitivity index. Scenario \textbf{e}: threshold 50 voles in ha$^{-1}$ and 7.5 kg ha$^-1$ of AR.}
+	\end{center}
+\end{figure}
+
+ \clearpage
+
+\subsection{Results without Foxes}
+
+\begin{table}[!htb]
+	\caption{Results on the cost functions for the comparison of treatment protocols. Column \textit{"FFR"} (farmer functional response) refers to the protocol denotation (a to e) and in brackets respectively: the vole density threshold, and the amount of AR/treatment in kg. The column \textit{"Nbr treat/yr"} refers to the number of treatment in simulation per year after the burn-in phase. \textit{"Total AR/yr"} is the total use of anticoagulant rodenticides per year (bromadiolone in kg). \textit{"M, 50\% AR death"} is the proportion of time with mortality by AR over 50\% in mustelids population. \textit{"M, 50\% Nat. death"} is the proportion of time with mortality by natural reason (i.e., all except AR) over 50\% in mustelids population. \textit{"V < 50 ha$^{-1}$"} is the proportion of time with less than 50 voles ha$^{-1}$. Finally, \textit{"Mean V density"}, \textit{"Mean M density"} and \textit{"Mean F density"} are mean densities of voles, mustelids and foxes respectively.}	
+	\label{tab:SMresults}
+	\begin{tabular}{p{2cm} c c c c c c c c}
+		\hline
+		\tabcell{FFR \\ (dose, limit)} &
+		\tabcell{Nbr. \\ treat/yr} &
+		\tabcell{Total  \\ AR/yr} &
+		\tabcell{M, 50\% \\ AR death} &
+		\tabcell{M, 50\% \\ Nat. death} &
+		\tabcell{V < \\ 50 ha$^{-1}$} &
+		\tabcell{Mean V \\ density} & 
+		\tabcell{Mean M \\ density} & 
+		\tabcell{Mean F \\ density} \\
+		\hline
+		%%
+		a (0,0)    & 0& 0& 0& 1& 0.5               & 215 & 0.61   & 0\\
+		% 
+		b (500,20) & 4.4& 88 & 0.03 &0.97 & 0.4     & 185 & 0.57 & 0\\
+		%
+		c (250, 20) & 2.3 & 46 &0.06 & 0.93 & 0.2 & 110 & 0.31 & 0\\
+		%
+		d (250, 7.5)& 4.9 & 37 & 0.04 & 0.96 & 0.3 & 116 & 0.58 & 0\\
+		%
+		e (50,7.5) & 5.6 &  42 & 0 & 1 & 0.9   & 55 & 0.08 & 0 \\
+		\hline
+	\end{tabular}
+\end{table}
+
+\begin{figure}[!htb]
+	\begin{center}
+		\includegraphics[width=\linewidth]{img/plot_join_0F.png}
+		\caption{Rate of variation of population densities simulated over 50 years (10 years of burn-in period in grey area): (Left) Dynamics of mustelids (grey line) and red foxes (black line), (Right) Dynamics of live (grey line) and dead (black line) voles. Letters at the top-center part of each sub-graph corresponds to the results obtained from each farmer functional response. Red area and Green area indicate the farmer-regulated (FR) and mustelid-regulated (MR) periods of vole population dynamics respectively.}
+		\label{fig:populations}
+	\end{center}
+\end{figure}
+
+\begin{figure}[!htb]
+	\begin{center}
+		\includegraphics[width=\linewidth]{img/graph_0_0_0F.png}
+		\caption{Variation of population densities and contaminant concentration in soil simulated over 50 years. Scenario \textbf{a}: 0 AR. Variables are: $D.F$ for fox density, $D.M$ for mustelid density, $D.V$ for vole density, $D.Vd$ for dead vole density and $C.soil$ for AR concentration in the environment.}
+	\end{center}
+\end{figure}
+
+\begin{figure}[!htb]
+	\begin{center}
+		\includegraphics[width=\linewidth]{img/graph_500_20_0F.png}
+		\caption{Variation of population densities and contaminant concentration in soil simulated over 50 years. Scenario \textbf{b}: threshold 500 in ha$^{-1}$ and 20 kg ha$^-1$ of AR. Variables are: $D.F$ for fox density, $D.M$ for mustelid density, $D.V$ for vole density, $D.Vd$ for dead vole density and $C.soil$ for AR concentration in the environment.}
+	\end{center}
+\end{figure}
+
+\begin{figure}[!htb]
+	\begin{center}
+		\includegraphics[width=\linewidth]{img/graph_250_20_0F.png}
+		\caption{Variation of population densities and contaminant concentration in soil simulated over 50 years. Scenario \textbf{c}: threshold 250 in ha$^{-1}$ and 20 kg ha$^-1$ of AR. Variables are: $D.F$ for fox density, $D.M$ for mustelid density, $D.V$ for vole density, $D.Vd$ for dead vole density and $C.soil$ for AR concentration in the environment.}
+	\end{center}
+\end{figure}
+
+\begin{figure}[!htb]
+	\begin{center}
+		\includegraphics[width=\linewidth]{img/graph_250_7_5_0F.png}
+		\caption{Variation of population densities and contaminant concentration in soil simulated over 50 years. Scenario \textbf{d}: threshold 250 in ha$^{-1}$ and 7.5 kg ha$^-1$ of AR. Variables are: $D.F$ for fox density, $D.M$ for mustelid density, $D.V$ for vole density, $D.Vd$ for dead vole density and $C.soil$ for AR concentration in the environment.}
+	\end{center}
+\end{figure}
+
+\begin{figure}[!htb]
+	\begin{center}
+		\includegraphics[width=\linewidth]{img/graph_50_7_5_0F.png}
+		\caption{Variation of population densities and contaminant concentration in soil simulated over 50 years. Scenario \textbf{e}: threshold 50 in ha$^{-1}$ and 7.5 kg ha$^-1$ of AR. Variables are: $D.F$ for fox density, $D.M$ for mustelid density, $D.V$ for vole density, $D.Vd$ for dead vole density and $C.soil$ for AR concentration in the environment.}
+	\end{center}
+\end{figure}
 
 
 % BIBLIOGRAPHY
 % \section*{References}
 
-%\bibliographystyle{elsarticle-harv}
-\bibliographystyle{plainnat}
+ \clearpage
+
+\bibliographystyle{elsarticle-harv}
+%\bibliographystyle{plainnat}
 %\bibliographystyle{unsrt}
 \bibliography{trophToxNTO.bib}
 
