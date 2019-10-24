@@ -1,0 +1,429 @@
+---
+title: "sensitivitySimulation"
+author: "Virgile Baudrot"
+date: "17 septembre 2019"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+library(trophToxNTO) # Package for ordinary differential equations
+library(gridExtra)
+library(tibble)
+library(dplyr)
+library(tidyr)
+```
+
+
+```{r param,echo=FALSE,warning=FALSE,include=FALSE}
+times <- seq(from=0, to = 50*365, length = 50*365) #  30*5 = 5 months 
+
+params <- pars(n=1,
+               LD.50.V = 2,
+               LD.50.M = 2,
+               LD.50.F = 2,
+               H.V = 4,
+               H.M = 4,
+               H.F = 4,
+               days.to.die.V = 5, 
+               days.to.die.M = 5,
+               days.to.die.F = 5)
+
+init.p <- init(params$n)
+```
+
+
+```{r}
+gridDF = expand.grid(LD.50.V = exp(seq(log(0.7), log(7), length.out = 3)), 
+                     LD.50.M = exp(seq(log(0.5), log(25), length.out = 4)),
+                     LD.50.F = exp(seq(log(0.5), log(25), length.out = 4)))
+# SIMU 1
+gridDF1 = expand.grid(LD.50.V = c(0.7, 1.5, 2, 3, 7), 
+                     LD.50.M = c(1.5, 2, 2.5, 7, 25),
+                     LD.50.F = c(0.5, 2, 7))
+
+# SIMU 2
+gridDF2 = expand.grid(LD.50.V = c(c(0.7, 1.5, 2, 3, 7),
+                                 c(1,1.75,2.5,4)),
+                     LD.50.M = c(c(1.5, 2, 2.5, 7, 25),
+                                 c(1,1.75,2.25,4)),
+                     LD.50.F = c(c(0.5, 2, 7)))
+# SIMU 3
+gridDF3 = expand.grid(LD.50.V = c(c(0.7, 1.5, 2, 3, 7),
+                                 c(1,1.75,2.5,4),
+                                 c(3.5)),
+                     LD.50.M = c(c(1.5, 2, 2.5, 7, 25),
+                                 c(1,1.75,2.25,4),
+                                 c(3)),
+                     LD.50.F = c(c(0.5, 2, 7),
+                                 c(1.5)))
+
+
+gridDF_REF = gridDF2
+gridDF_BIG = gridDF3
+
+rowToRm = c()
+for(i in 1:nrow(gridDF_BIG)){
+  for(j in 1:nrow(gridDF_REF)){
+    if(all(gridDF_BIG[i,] == gridDF_REF[j,])){
+      rowToRm = c(rowToRm, i)
+    }
+  }
+}
+
+gridDF = gridDF_BIG[-rowToRm, ]
+
+plot(gridDF$LD.50.V, gridDF$LD.50.M)
+plot(log(gridDF$LD.50.V), log(gridDF$LD.50.M))
+
+write.csv(gridDF, file = "/home/vbaudrot/Documents/PACKAGES/trophToxNTO/manuscript/dataSim/gridDF.csv")
+```
+
+
+```{r}
+DFerror = data.frame("time" = NA,
+                        "C.soil_" = NA, 
+                        "C.V_"  = NA,
+                        "C.M_"  = NA,
+                        "C.F_"  = NA,
+                        "D.V_" = NA,
+                        "D.Vd_" = NA,
+                        "D.M_" = NA,
+                        "D.F_" = NA,
+                        "Cing.V_" = NA,
+                        "Cing.M_" = NA,
+                        "Cing.F_" = NA)
+```
+
+
+## b) Model 500-20
+
+```{r model.output_500.20, cache=TRUE}
+# --------------------------- EVENEMENTS -------------------
+root.event = condition(Vole.Level=500,Broma.Level=20*50)[[1]]
+event.func = condition(Vole.Level=500,Broma.Level=20*50)[[2]]
+
+
+# --------------------------- Modelisation -------------------
+model.output_500.20 = list()
+
+for(i in 1: nrow(gridDF)){
+  
+  params$LD.50.V = gridDF$LD.50.V[i]
+  params$LD.50.M = gridDF$LD.50.M[i]
+  params$LD.50.F = gridDF$LD.50.F[i]
+  
+  model.output_500.20[[i]] =
+      tryCatch(ode(y=init.p,
+                  times,
+                  ode.broma.tritrophic,
+                  parms = params,
+                  events = list(func = event.func, root = TRUE),
+                  rootfun = root.event),
+    error = function(error_message) {
+      message(error_message)
+      return(DFerror)}
+      )
+}
+
+
+DFmodel.output_500.20 = do.call("rbind", model.output_500.20)
+DFmodel.output_500.20 = as_tibble(DFmodel.output_500.20) # FASTER TO USE !!!
+DFmodel.output_500.20$replicate = do.call("c", lapply(1:length(model.output_500.20), function(i) rep(i, nrow(model.output_500.20[[i]]))))
+DFmodel.output_500.20$LD.50.V = do.call("c", lapply(1:length(model.output_500.20), function(i) rep(gridDF$LD.50.V[i], nrow(model.output_500.20[[i]]))))
+DFmodel.output_500.20$LD.50.M = do.call("c", lapply(1:length(model.output_500.20), function(i) rep(gridDF$LD.50.M[i], nrow(model.output_500.20[[i]]))))
+DFmodel.output_500.20$LD.50.F = do.call("c", lapply(1:length(model.output_500.20), function(i) rep(gridDF$LD.50.F[i], nrow(model.output_500.20[[i]]))))
+
+save(file = "dataSIM/DFmodel.output_500.20.rda", DFmodel.output_500.20)
+```
+
+
+## c) Model 250-20
+
+```{r model.output_250.20, cache=TRUE}
+# --------------------------- EVENEMENTS -------------------
+root.event = condition(Vole.Level=250,Broma.Level=20*50)[[1]]
+event.func = condition(Vole.Level=250,Broma.Level=20*50)[[2]]
+
+# --------------------------- Modelisation -------------------
+model.output_250.20 = list()
+
+for(i in 1: nrow(gridDF)){
+  
+  params$LD.50.V = gridDF$LD.50.V[i]
+  params$LD.50.M = gridDF$LD.50.M[i]
+  params$LD.50.F = gridDF$LD.50.F[i]
+  
+  model.output_250.20[[i]] = 
+    tryCatch(ode(y=init.p,
+                  times,
+                  ode.broma.tritrophic,
+                  parms = params,
+                  events = list(func = event.func, root = TRUE),
+                  rootfun = root.event),
+    error = function(error_message) {
+      message(error_message)
+      return(DFerror)}
+      )
+}
+
+
+DFmodel.output_250.20 = do.call("rbind", model.output_250.20)
+DFmodel.output_250.20 = as_tibble(DFmodel.output_250.20) # FASTER TO USE !!!
+DFmodel.output_250.20$replicate = do.call("c", lapply(1:length(model.output_250.20), function(i) rep(i, nrow(model.output_250.20[[i]]))))
+DFmodel.output_250.20$LD.50.V = do.call("c", lapply(1:length(model.output_250.20), function(i) rep(gridDF$LD.50.V[i], nrow(model.output_250.20[[i]]))))
+DFmodel.output_250.20$LD.50.M = do.call("c", lapply(1:length(model.output_250.20), function(i) rep(gridDF$LD.50.M[i], nrow(model.output_250.20[[i]]))))
+DFmodel.output_250.20$LD.50.F = do.call("c", lapply(1:length(model.output_250.20), function(i) rep(gridDF$LD.50.F[i], nrow(model.output_250.20[[i]]))))
+
+save(file = "dataSIM/DFmodel.output_250.20.rda", DFmodel.output_250.20)
+```
+
+
+## d) Model 250-7.5
+
+```{r model.output_250.7.5, cache=TRUE}
+# --------------------------- EVENEMENTS -------------------
+root.event = condition(Vole.Level=250,Broma.Level=7.5*50)[[1]]
+event.func = condition(Vole.Level=250,Broma.Level=7.5*50)[[2]]
+
+# --------------------------- Modelisation -------------------
+model.output_250.7.5 = list()
+
+for(i in 1: nrow(gridDF)){
+  
+  params$LD.50.V = gridDF$LD.50.V[i]
+  params$LD.50.M = gridDF$LD.50.M[i]
+  params$LD.50.F = gridDF$LD.50.F[i]
+  
+  model.output_250.7.5[[i]] = 
+         tryCatch(ode(y=init.p,
+                  times,
+                  ode.broma.tritrophic,
+                  parms = params,
+                  events = list(func = event.func, root = TRUE),
+                  rootfun = root.event),
+    error = function(error_message) {
+      message(error_message)
+      return(DFerror)}
+      )
+}
+
+
+DFmodel.output_250.7.5 = do.call("rbind", model.output_250.7.5)
+DFmodel.output_250.7.5 = as_tibble(DFmodel.output_250.7.5) # FASTER TO USE !!!
+DFmodel.output_250.7.5$replicate = do.call("c", lapply(1:length(model.output_250.7.5), function(i) rep(i, nrow(model.output_250.7.5[[i]]))))
+DFmodel.output_250.7.5$LD.50.V = do.call("c", lapply(1:length(model.output_250.7.5), function(i) rep(gridDF$LD.50.V[i], nrow(model.output_250.7.5[[i]]))))
+DFmodel.output_250.7.5$LD.50.M = do.call("c", lapply(1:length(model.output_250.7.5), function(i) rep(gridDF$LD.50.M[i], nrow(model.output_250.7.5[[i]]))))
+DFmodel.output_250.7.5$LD.50.F = do.call("c", lapply(1:length(model.output_250.7.5), function(i) rep(gridDF$LD.50.F[i], nrow(model.output_250.7.5[[i]]))))
+
+save(file = "dataSIM/DFmodel.output_250.7.5.rda", DFmodel.output_250.7.5)
+```
+
+## e) Model 50-7.5
+
+```{r model.output_50.7.5, cache=TRUE}
+# --------------------------- EVENEMENTS -------------------
+root.event = condition(Vole.Level=50,Broma.Level=7.5*50)[[1]]
+event.func = condition(Vole.Level=50,Broma.Level=7.5*50)[[2]]
+
+
+# --------------------------- Modelisation -------------------
+model.output_50.7.5 = list()
+
+for(i in 1: nrow(gridDF)){
+  
+  params$LD.50.V = gridDF$LD.50.V[i]
+  params$LD.50.M = gridDF$LD.50.M[i]
+  params$LD.50.F = gridDF$LD.50.F[i]
+  
+  model.output_50.7.5[[i]] = 
+         tryCatch(ode(y=init.p,
+                  times,
+                  ode.broma.tritrophic,
+                  parms = params,
+                  events = list(func = event.func, root = TRUE),
+                  rootfun = root.event),
+    error = function(error_message) {
+      message(error_message)
+      return(DFerror)}
+      )
+}
+
+
+DFmodel.output_50.7.5 = do.call("rbind", model.output_50.7.5)
+DFmodel.output_50.7.5 = as_tibble(DFmodel.output_50.7.5) # FASTER TO USE !!!
+DFmodel.output_50.7.5$replicate = do.call("c", lapply(1:length(model.output_50.7.5), function(i) rep(i, nrow(model.output_50.7.5[[i]]))))
+DFmodel.output_50.7.5$LD.50.V = do.call("c", lapply(1:length(model.output_50.7.5), function(i) rep(gridDF$LD.50.V[i], nrow(model.output_50.7.5[[i]]))))
+DFmodel.output_50.7.5$LD.50.M = do.call("c", lapply(1:length(model.output_50.7.5), function(i) rep(gridDF$LD.50.M[i], nrow(model.output_50.7.5[[i]]))))
+DFmodel.output_50.7.5$LD.50.F = do.call("c", lapply(1:length(model.output_50.7.5), function(i) rep(gridDF$LD.50.F[i], nrow(model.output_50.7.5[[i]]))))
+
+save(file = "dataSIM/DFmodel.output_50.7.5.rda", DFmodel.output_50.7.5)
+```
+
+
+# PLOT FOR sensitivity simulation
+
+```{r}
+library(ggplot2)
+library(gridExtra)
+library(tidyr)
+library(dplyr)
+
+gridDF_marked = read.csv("../manuscript/dataSim/gridDF_marked.csv")
+
+
+meltDF_plt = gridDF_marked %>%
+  gather("TreatmentT", "Pattern", c("Voles500_kg20", "Voles250_kg20", "Voles250_kg7.5", "Voles50_kg7.5")) %>%
+  mutate(Pattern = ifelse(Pattern == 1, "AR permanent regulation",
+                          ifelse(Pattern == 2, "Mustelids periodic regulation",
+                                 ifelse(Pattern == 3, "Mustelids periodic regulation", NA))))
+
+meltDF_plt$LD.50.F = paste("LD50 Fox:", meltDF_plt$LD.50.F)
+
+treatmentDf = data.frame(Treatment = c("B (500, 20)", "C (250, 20)","D (250, 7.5)", "E (50, 7.5)"),
+                         TreatmentT = c("Voles500_kg20", "Voles250_kg20","Voles250_kg7.5", "Voles50_kg7.5"))
+
+
+gridDF_plt = full_join(meltDF_plt, treatmentDf, by = "TreatmentT")
+gridDF_plt$Treatment = factor(gridDF_plt$Treatment, levels = c("B (500, 20)", "C (250, 20)","D (250, 7.5)", "E (50, 7.5)"))
+
+# ---- points of Figure with dynamic curves
+dataPoints = data.frame(LD.50.V = c(0.7,2,4,2.5,2.5,1.5,2.5,2,2),
+                        LD.50.M = c(2.5,2.5,2.5,2,7,7,7,7,7),
+                        LD.50.F = paste("LD50 Fox:", c(0.5,0.5,0.5,7,7,7,7,0.5,2)),
+                        Treatment = c("B (500, 20)", "B (500, 20)", "B (500, 20)", "C (250, 20)", "C (250, 20)", 
+                                      "D (250, 7.5)", "D (250, 7.5)", "E (50, 7.5)", "E (50, 7.5)"),
+                        label = c("B-1", "B-2", "B-3", "C-1", "C-2", "D-1", "D-2", "E-1", "E-2"))
+
+# ----------------
+plt_GSA = ggplot() + theme_minimal() +
+  theme(#legend.position="bottom",
+        axis.text.x = element_text(angle = 90, hjust = 1)) +
+  scale_fill_manual(values = c("grey", "black"),
+                    name = "Dynamical patterns",
+                    labels = c("AR permanent regulation", "Mustelids periodic regulation", "NA: simulation failed")) +
+  labs(x = "LD50 for Voles", y = "LD50 for Mustelids")+
+  geom_tile(data = gridDF_plt,
+            aes(x = as.factor(LD.50.V), y = as.factor(LD.50.M), fill = as.factor(Pattern))) +
+  geom_point(data = dataPoints, color = "red",
+             aes(x =  as.factor(LD.50.V), y = as.factor(LD.50.M))) +
+  geom_text(data = dataPoints,
+             aes(x =  as.factor(LD.50.V), y = as.factor(LD.50.M), label=label),
+            color = "red",hjust=-0.1, vjust=-0.1) +
+  facet_grid(LD.50.F ~ Treatment)
+plt_GSA
+
+
+ggsave(plt_GSA, file = "/home/vbaudrot/Documents/PACKAGES/trophToxNTO/manuscript/img/plt_GSA.jpg", width = 9, height = 6)
+ggsave(plt_GSA, file = "/home/vbaudrot/Documents/PACKAGES/trophToxNTO/manuscript/img/plt_GSA.svg", width = 8, height = 6.5)
+```
+
+# Typical patterns
+
+```{r param,echo=FALSE,warning=FALSE,include=FALSE}
+times <- seq(from=0, to = 50*365, length = 50*365) #  30*5 = 5 months 
+
+params <- pars(n=1,
+               LD.50.V = 2,
+               LD.50.M = 2,
+               LD.50.F = 2,
+               H.V = 4,
+               H.M = 4,
+               H.F = 4,
+               days.to.die.V = 5,
+               days.to.die.M = 5,
+               days.to.die.F = 5)
+
+#params <- pars(n=1)
+
+init.p <- init(params$n)
+```
+
+### Mustelids collapse
+
+```{r model.output_250.7.5, cache=TRUE}
+params$LD.50.V = 1.5
+params$LD.50.M = 1.5
+params$LD.50.F = 0.5
+
+# --------------------------- EVENEMENTS -------------------
+root.event = condition(Vole.Level=250,Broma.Level=7.5*50)[[1]]
+event.func = condition(Vole.Level=250,Broma.Level=7.5*50)[[2]]
+
+# --------------------------- Modelisation -------------------
+model.output_250.7.5 = ode(y=init.p,
+                   times,
+                   ode.broma.tritrophic,
+                   # ode.broma.tritrophic_2nd, 
+                   parms = params,
+                   events = list(func = event.func, root = TRUE),
+                   rootfun = root.event)
+plt_Mcollapse <-graphique_3(params$n,times,model.output_250.7.5)
+plt_Mcollapse
+
+
+df = model.output_250.7.5
+ggplot() + theme_minimal() +
+  geom_line())
+  
+
+
+```
+
+### Mustelids no-effect
+
+```{r model.output_250.7.5, cache=TRUE}
+params$LD.50.V = 1.5
+params$LD.50.M = 2
+params$LD.50.F = 1.5
+
+# --------------------------- EVENEMENTS -------------------
+root.event = condition(Vole.Level=250,Broma.Level=7.5*50)[[1]]
+event.func = condition(Vole.Level=250,Broma.Level=7.5*50)[[2]]
+
+# --------------------------- Modelisation -------------------
+model.output_250.7.5 = ode(y=init.p,
+                   times,
+                   ode.broma.tritrophic,
+                   # ode.broma.tritrophic_2nd, 
+                   parms = params,
+                   events = list(func = event.func, root = TRUE),
+                   rootfun = root.event)
+plt_MnoEffect <-graphique_3(params$n,times,model.output_250.7.5)
+plt_MnoEffect
+```
+
+### Mustelids regulation
+
+```{r model.output_250.7.5, cache=TRUE}
+params$LD.50.V = 3
+params$LD.50.M = 25
+params$LD.50.F = 0.5
+
+# --------------------------- EVENEMENTS -------------------
+root.event = condition(Vole.Level=250,Broma.Level=7.5*50)[[1]]
+event.func = condition(Vole.Level=250,Broma.Level=7.5*50)[[2]]
+
+# --------------------------- Modelisation -------------------
+model.output_250.7.5 = ode(y=init.p,
+                   times,
+                   ode.broma.tritrophic,
+                   # ode.broma.tritrophic_2nd, 
+                   parms = params,
+                   events = list(func = event.func, root = TRUE),
+                   rootfun = root.event)
+plt_Mregulation <-graphique_3(params$n,times,model.output_250.7.5)
+plt_Mregulation
+```
+
+```{r}
+library(gridExtra)
+grid.arrange(
+  plt_Mcollapse,
+  plt_MnoEffect,
+  plt_Mregulation,
+  ncol = 3
+)
+```
+

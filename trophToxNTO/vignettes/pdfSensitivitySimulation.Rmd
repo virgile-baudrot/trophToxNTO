@@ -1,0 +1,75 @@
+---
+title: "Simulation of sensitivity analysis"
+author: "Virgile Baudrot"
+date: "11 octobre 2019"
+output: pdf_document
+editor_options: 
+  chunk_output_type: console
+---
+
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(trophToxNTO) # Package for ordinary differential equations
+load(file = "/home/vbaudrot/Documents/PACKAGES/trophToxNTO/trophToxNTO/dataSIM/DFmodel.output_500.20.rda")
+load(file = "/home/vbaudrot/Documents/PACKAGES/trophToxNTO/trophToxNTO/dataSIM/DFmodel.output_250.20.rda")
+load(file = "/home/vbaudrot/Documents/PACKAGES/trophToxNTO/trophToxNTO/dataSIM/DFmodel.output_250.7.5.rda")
+load(file = "/home/vbaudrot/Documents/PACKAGES/trophToxNTO/trophToxNTO/dataSIM/DFmodel.output_50.7.5.rda")
+```
+
+# DFmodel.output_500.20
+
+```{r, fig.width=8, fig.height=3, warning=FALSE}
+(up = length(unique(DFmodel.output_500.20$replicate)))
+times <- seq(from=0, to = 50*365, length = 50*365) #  30*5 = 5 months
+for(i in 1:up){
+  dfPLT = filter(DFmodel.output_500.20, replicate == i)
+  title = paste("LD50_V:", unique(dfPLT$LD.50.V),
+                "LD50_M:", unique(dfPLT$LD.50.M),
+                "LD50_F:", unique(dfPLT$LD.50.F))
+  print(graphique_3b(1,times,dfPLT, title))
+}
+```
+
+# DFmodel.output_250.20
+
+```{r, fig.width=8, fig.height=3, warning=FALSE}
+(up = length(unique(DFmodel.output_250.20$replicate)))
+times <- seq(from=0, to = 50*365, length = 50*365) #  30*5 = 5 months
+for(i in 1:up){
+  dfPLT = filter(DFmodel.output_250.20, replicate == i)
+  title = paste("LD50_V:", unique(dfPLT$LD.50.V),
+                "LD50_M:", unique(dfPLT$LD.50.M),
+                "LD50_F:", unique(dfPLT$LD.50.F))
+  print(graphique_3b(1,times,dfPLT, title))
+}
+```
+
+# DFmodel.output_250.7.5
+
+```{r, fig.width=8, fig.height=3, warning=FALSE}
+(up = length(unique(DFmodel.output_250.7.5$replicate)))
+times <- seq(from=0, to = 50*365, length = 50*365) #  30*5 = 5 months
+for(i in 1:up){
+  dfPLT = filter(DFmodel.output_250.7.5, replicate == i)
+  title = paste("LD50_V:", unique(dfPLT$LD.50.V),
+                "LD50_M:", unique(dfPLT$LD.50.M),
+                "LD50_F:", unique(dfPLT$LD.50.F))
+  print(graphique_3b(1,times,dfPLT, title))
+}
+```
+
+# DFmodel.output_50.7.5
+
+```{r, fig.width=8, fig.height=3, warning=FALSE}
+(up = length(unique(DFmodel.output_50.7.5$replicate)))
+times <- seq(from=0, to = 50*365, length = 50*365) #  30*5 = 5 months
+for(i in 1:up){
+  dfPLT = filter(DFmodel.output_50.7.5, replicate == i)
+  title = paste("LD50_V:", unique(dfPLT$LD.50.V),
+                "LD50_M:", unique(dfPLT$LD.50.M),
+                "LD50_F:", unique(dfPLT$LD.50.F))
+  print(graphique_3b(1,times,dfPLT, title))
+}
+```

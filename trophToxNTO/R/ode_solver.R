@@ -105,12 +105,12 @@ ode.broma.tritrophic_2nd = function(Time, State, Pars) { # The model is a functi
 
     ### vole dynamics
     dV = r.V*D.V*(1-D.V/K.V) -
-      dose.resp.mort(C.V, LD.50.V,H.V,days.to.die.V)*D.V - # broma mortality # 6 days to die
+      dose.resp.mort(Cing.V, LD.50.V,H.V,days.to.die.V)*D.V - # broma mortality # 6 days to die
       a.M*D.V/(a.M*D.V+a.Md*D.Vd)*(a.M*D.V+a.Md*D.Vd)/(1+h.M*(a.M*D.V+a.Md*D.Vd))*D.M - #mustelid functional response
       a.F*D.V/(a.F*D.V+a.Fd*D.Vd+a.FM*D.M)*(a.F*D.V+a.Fd*D.Vd+a.FM*D.M)^2/(1+h.F*(a.F*D.V+a.Fd*D.Vd+a.FM*D.M)^2)*D.F #fox functional response
 
     ### dead Vole dynamics:
-    dVd = dose.resp.mort(C.V, LD.50.V,H.V,days.to.die.V)*D.V - d*D.Vd -# add vole dead by bromadiolone
+    dVd = dose.resp.mort(Cing.V, LD.50.V,H.V,days.to.die.V)*D.V - d*D.Vd -# add vole dead by bromadiolone
       a.M*D.Vd/(a.M*D.V+a.Md*D.Vd)*(a.M*D.V+a.Md*D.Vd)/(1+h.M*(a.M*D.V+a.Md*D.Vd))*D.M - #mustelid functional response
       a.F*D.Vd/(a.F*D.V+a.Fd*D.Vd+a.FM*D.M)*(a.F*D.V+a.Fd*D.Vd+a.FM*D.M)^2/(1+h.F*(a.F*D.V+a.Fd*D.Vd+a.FM*D.M)^2)*D.F
 
