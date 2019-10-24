@@ -905,6 +905,9 @@ levels(sobolSensitivityIndex$parameter) = factor(sobolSensitivityIndex$parameter
 
 sobolSensitivityIndex$parameter = c("$r_V$", "$K_V$", "$a_M$", "$a_F$", "$h_M$", "$h_F$", "$m_M$", "$d$", "$a_{FM}$", "$r_F$", "$K_F$", "$\\varepsilon_M$", "$LD_{50,V}$", "$LD_{50,M}$", "$LD_{50,F}$", "$dd_V$", "$dd_M$", "$dd_F$", "$H_V$", "$H_M$", "$H_F$", "$B_V$", "$B_M$", "$B_F$", "$M_{in}$", "$D_{in}$", "$\\eta_M$", "$\\eta_F$", "$k_{out,V}$", "$k_{out,M}$", "$k_{out,F}", "$k_0$")
 
+
+sobolSensitivityIndex$parameter = c("r_V", "K_V", "a_M", "a_F", "h_M", "h_F", "m_M", "d", "a_{FM}", "r_F", "K_F", "\\varepsilon_M", "LD_{50,V}", "LD_{50,M}", "LD_{50,F}", "dd_V", "dd_M", "dd_F", "H_V", "H_M", "H_F", "B_V", "B_M", "B_F", "M_{in}", "D_{in}", "\\eta_M", "\\eta_F", "k_{out,V}", "k_{out,M}", "k_{out,F}", "k_0")
+
 # --- plot
 library(tidyr)
 df_sobolIndex  = as.data.frame(sobolSensitivityIndex) %>%

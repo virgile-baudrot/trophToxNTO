@@ -24,7 +24,18 @@ library(gridExtra)
 ```{r param,echo=FALSE,warning=FALSE,include=FALSE}
 times <- seq(from=0, to = 50*365, length = 50*365) #  30*5 = 5 months 
 
-params <- pars(n=1)
+params <- pars(n=1,
+               LD.50.V = 2,
+               LD.50.M = 2,
+               LD.50.F = 2,
+               H.V = 4,
+               H.M = 4,
+               H.F = 4,
+               days.to.die.V = 5,
+               days.to.die.M = 5,
+               days.to.die.F = 5)
+
+#params <- pars(n=1)
 
 init.p <- init(params$n)
 ```
@@ -44,6 +55,7 @@ model.output_0.0 = ode(y=init.p,
                     parms = params)
 # --------------------------- Plot-------------------
 graph_0.0 <- graphique_3(params$n,times,model.output_0.0)
+graph_0.0
 ```
 
 ## b) Model 500-20
@@ -62,10 +74,13 @@ model.output_500.20 = ode(y=init.p,
                    rootfun = root.event)
 
 graph_500.20 <- graphique_3(params$n,times,model.output_500.20)
+graph_500.20
 ```
 
 
 ## c) Model 250-20
+
+
 
 ```{r model.output_250.20, cache=TRUE}
 # --------------------------- EVENEMENTS -------------------
@@ -81,7 +96,9 @@ model.output_250.20 = ode(y=init.p,
                    rootfun = root.event)
 
 graph_250.20 <- graphique_3(params$n,times,model.output_250.20)
+graph_250.20
 ```
+
 
 ## d) Model 250-7.5
 
@@ -93,11 +110,13 @@ event.func = condition(Vole.Level=250,Broma.Level=7.5*50)[[2]]
 # --------------------------- Modelisation -------------------
 model.output_250.7.5 = ode(y=init.p,
                    times,
-                   ode.broma.tritrophic, 
+                   ode.broma.tritrophic,
+                   # ode.broma.tritrophic_2nd, 
                    parms = params,
                    events = list(func = event.func, root = TRUE),
                    rootfun = root.event)
 graph_250.7.5 <-graphique_3(params$n,times,model.output_250.7.5)
+graph_250.7.5
 ```
 
 ## e) Model 50-7.5
@@ -116,6 +135,7 @@ model.output_50.7.5 = ode(y = init.p,
                    rootfun = root.event)
 
 graph_50.7.5 <- graphique_3(params$n,times,model.output_50.7.5)
+graph_50.7.5
 ```
 
 
@@ -137,6 +157,7 @@ model.output_0.0_0F = ode(y=init.p,
                     parms = params)
 # --------------------------- Plot-------------------
 graph_0.0_0F <-  graphique_3(params$n,times,model.output_0.0_0F)
+graph_0.0_0F
 ```
 
 ## b) Model 500-20
@@ -155,6 +176,7 @@ model.output_500.20_0F = ode(y=init.p,
                    rootfun = root.event)
 
 graph_500.20_0F <- graphique_3(params$n,times,model.output_500.20_0F)
+graph_500.20_0F
 ```
 
 
@@ -174,6 +196,7 @@ model.output_250.20_0F = ode(y=init.p,
                    rootfun = root.event)
 
 graph_250.20_0F <-graphique_3(params$n,times,model.output_250.20_0F)
+graph_250.20_0F
 ```
 
 ## d) Model 250-7.5
@@ -192,6 +215,7 @@ model.output_250.7.5_0F = ode(y=init.p,
                    rootfun = root.event)
 
 graph_250.7.5_0F <- graphique_3(params$n,times,model.output_250.7.5_0F)
+graph_250.7.5_0F
 ```
 
 ## e) Model 50-7.5
@@ -210,6 +234,7 @@ model.output_50.7.5_0F = ode(y = init.p,
                    rootfun = root.event)
 
 graph_50.7.5_0F <- graphique_3(params$n,times,model.output_50.7.5_0F)
+graph_50.7.5_0F
 ```
 
 # MEASURE OUTPUT
@@ -256,18 +281,18 @@ tab_sensitivity(model.output_5.7.5_0F, params)[,36:42]
 library(dplyr)
 library(tidyr)
 library(ggplot2)
-# setwd("~/Documents/PACKAGES/trophToxNTO/trophToxNTO")
-# load(file = "data/model.output_0.0.rda")
-# load(file = "data/model.output_500.20.rda")
-# load(file = "data/model.output_250.20.rda")
-# load(file = "data/model.output_250.7.5.rda")
-# load(file = "data/model.output_50.7.5_0F.rda")
-# 
-# load(file = "data/model.output_0.0_0F.rda")
-# load(file = "data/model.output_500.20_0F.rda")
-# load(file = "data/model.output_250.20_0F.rda")
-# load(file =  "data/model.output_250.7.5_0F.rda")
-# load(file = "data/model.output_50.7.5_0F.rda")
+# setwd("~/Documents/PACKAGES/trophToxNTO/trophToxNTO/d")
+load(file = "data/model.output_0.0.rda")
+load(file = "data/model.output_500.20.rda")
+load(file = "data/model.output_250.20.rda")
+load(file = "data/model.output_250.7.5.rda")
+load(file = "data/model.output_50.7.5_0F.rda")
+
+load(file = "data/model.output_0.0_0F.rda")
+load(file = "data/model.output_500.20_0F.rda")
+load(file = "data/model.output_250.20_0F.rda")
+load(file =  "data/model.output_250.7.5_0F.rda")
+load(file = "data/model.output_50.7.5_0F.rda")
 ```
 
 
@@ -1317,6 +1342,41 @@ ggsave(filename = "../manuscript/img/plot_join_VVd_0F.png", plot = plot_join_VVd
 ggsave(filename = "../manuscript/img/plot_join_0F.png", plot = plot_join,
        width = 9, height = 7)
 ```
+
+# PLOT POPULATION REPRODUCTION RATE
+
+```{r reproRatePop}
+library(zoo)
+x = as.data.frame(model.output_500.20)
+
+# interpolate for deltaStep
+deltaStep = 30 #days
+interpTime = seq(0,365*50, by = deltaStep)
+interpTimeUnique = interpTime %in% x$time
+df = data.frame(time = c(x$time, interpTime),
+                density = c(x[, "C.V_"], rep(NA, length(interpTime))))
+df = dplyr::arrange(df, time)
+
+interpDensity = zoo::na.approx(df$density, df$time)
+
+# uniqueness of time step
+unique(sapply(1:(length(x$time)-1), function(i) x$time[i+1]-x$time[i]))
+
+deltaSteps = sapply(1:(length(x$time)-1), function(i) x$time[i+1]-x$time[1])
+
+rollGrowth = lapply(1:length(deltaSteps), function(j){
+  tmpGrowth = sapply(1:(length(x$time)-j), function(i){ (x$C.V_[i+j]-x$C.V_[i])/deltaSteps[j]
+  data.frame( growth = tmpGrowth,
+              
+    })
+  })
+
+
+rollGrowth = do.call("c", rollGrowth)
+rollGrowthTime =  
+rollGrowthReplicate
+```
+
 
 # PLOT ROLLING MEANS
 

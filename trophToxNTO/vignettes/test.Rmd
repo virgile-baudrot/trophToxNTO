@@ -1,0 +1,122 @@
+---
+title: "test_other parameters"
+author: "Virgile Baudrot"
+date: "19 juin 2019"
+output: pdf_document
+---
+
+
+```{r,echo=FALSE,warning=FALSE,include=FALSE}
+knitr::opts_chunk$set(fig.height = 6,
+                      fig.width = 7)
+
+library(trophToxNTO) # Package for ordinary differential equations
+library(gridExtra)
+```
+
+
+```{r param,echo=FALSE,warning=FALSE,include=FALSE}
+times <- seq(from=0, to = 50*365, length = 50*365) #  30*5 = 5 months 
+
+params <- pars(n=1,
+               LD.50.V = 3.9,
+               LD.50.M = 9.8,
+               LD.50.F = 0.5)
+
+init.p <- init(params$n)
+```
+
+# With foxes
+
+----------------------------------------- CONTROL
+
+## a) Model 0-0
+
+
+```{r model.output_0.0, echo=FALSE,warning=FALSE,comment=FALSE,message=FALSE, cache=TRUE}
+# --------------------------- Modelisation -------------------
+model.output_0.0 = ode(y=init.p,
+                    times,
+                    ode.broma.tritrophic, 
+                    parms = params)
+# --------------------------- Plot-------------------
+graph_0.0 <- graphique_3(params$n,times,model.output_0.0)
+graph_0.0
+```
+
+## b) Model 500-20
+
+```{r model.output_500.20, cache=TRUE}
+# --------------------------- EVENEMENTS -------------------
+root.event=condition(Vole.Level=500,Broma.Level=20*50)[[1]] # kg * mg/kg
+event.func=condition(Vole.Level=500,Broma.Level=20*50)[[2]]
+
+# --------------------------- Modelisation -------------------
+model.output_500.20 = ode(y=init.p,
+                   times,
+                   ode.broma.tritrophic, 
+                   parms = params,
+                   events = list(func = event.func, root = TRUE),
+                   rootfun = root.event)
+
+graph_500.20 <- graphique_3(params$n,times,model.output_500.20)
+graph_500.20
+```
+
+
+## c) Model 250-20
+
+```{r model.output_250.20, cache=TRUE}
+# --------------------------- EVENEMENTS -------------------
+root.event = condition(Vole.Level=250,Broma.Level=20*50)[[1]]
+event.func = condition(Vole.Level=250,Broma.Level=20*50)[[2]]
+
+# --------------------------- Modelisation -------------------
+model.output_250.20 = ode(y=init.p,
+                   times,
+                   ode.broma.tritrophic, 
+                   parms = params,
+                   events = list(func = event.func, root = TRUE),
+                   rootfun = root.event)
+
+graph_250.20 <- graphique_3(params$n,times,model.output_250.20)
+graph_250.20
+```
+
+## d) Model 250-7.5
+
+```{r model.output_250.7.5, cache=TRUE}
+# --------------------------- EVENEMENTS -------------------
+root.event = condition(Vole.Level=250,Broma.Level=7.5*50)[[1]]
+event.func = condition(Vole.Level=250,Broma.Level=7.5*50)[[2]]
+
+# --------------------------- Modelisation -------------------
+model.output_250.7.5 = ode(y=init.p,
+                   times,
+                   # ode.broma.tritrophic,
+                   ode.broma.tritrophic, 
+                   parms = params,
+                   events = list(func = event.func, root = TRUE),
+                   rootfun = root.event)
+graph_250.7.5 <-graphique_3(params$n,times,model.output_250.7.5)
+graph_250.7.5
+```
+
+## e) Model 50-7.5
+
+```{r model.output_50.7.5, cache=TRUE}
+# --------------------------- EVENEMENTS -------------------
+root.event = condition(Vole.Level=50,Broma.Level=7.5*50)[[1]]
+event.func = condition(Vole.Level=50,Broma.Level=7.5*50)[[2]]
+
+# --------------------------- Modelisation -------------------
+model.output_50.7.5 = ode(y = init.p,
+                   times,
+                   ode.broma.tritrophic, 
+                   parms = params,
+                   events = list(func = event.func, root = TRUE),
+                   rootfun = root.event)
+
+graph_50.7.5 <- graphique_3(params$n,times,model.output_50.7.5)
+graph_50.7.5
+```
